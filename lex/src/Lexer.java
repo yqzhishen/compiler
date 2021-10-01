@@ -1,28 +1,12 @@
 import java.io.*;
 
-public class Analyzer {
-
-    public static Token fixToken(Token original) {
-        TokenType type = original.getType();
-        if (type.equals(TokenType.Ident)) {
-            String name = original.getParam();
-            return switch (name) {
-                case "if" -> new Token(TokenType.If);
-                case "else" -> new Token(TokenType.Else);
-                case "while" -> new Token(TokenType.While);
-                case "break" -> new Token(TokenType.Break);
-                case "continue" -> new Token(TokenType.Continue);
-                case "return" -> new Token(TokenType.Return);
-                default -> original;
-            };
-        }
-        return original;
-    }
+public class Lexer {
 
     public static void main(String[] args) throws IOException {
         File src = new File(args[0]);
         FileReader fr = new FileReader(src);
-        PushbackReader pr = new PushbackReader(fr);
+        BufferedReader br = new BufferedReader(fr, 256);
+        PushbackReader pr = new PushbackReader(br);
         Automaton dfa = new Automaton(Lex.states);
         try {
             int c = pr.read();
@@ -33,7 +17,7 @@ public class Analyzer {
                         Token token = dfa.getToken();
                         if (token == null)
                             throw new ErrException();
-                        System.out.println(fixToken(token));
+                        System.out.println(Lex.reservedToken(token));
                         dfa.reset();
                     }
                 }
@@ -49,7 +33,7 @@ public class Analyzer {
                     if (dfa.isEmpty())
                         throw new ErrException();
                     if (token != null) {
-                        System.out.println(fixToken(token));
+                        System.out.println(Lex.reservedToken(token));
                         dfa.reset();
                     }
                 }
@@ -59,12 +43,15 @@ public class Analyzer {
                 Token token = dfa.getToken();
                 if (token == null)
                     throw new ErrException();
-                System.out.println(fixToken(token));
+                System.out.println(Lex.reservedToken(token));
                 dfa.reset();
             }
         }
         catch (ErrException err) {
             System.out.println("Err");
         }
+        pr.close();
+        br.close();
+        fr.close();
     }
 }

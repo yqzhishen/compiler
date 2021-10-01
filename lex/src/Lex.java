@@ -68,5 +68,21 @@ public class Lex {
             new SimpleState(TokenType.Lt),
             new SimpleState(TokenType.Gt)
     };
+    public static Token reservedToken(Token original) {
+        TokenType type = original.getType();
+        if (type.equals(TokenType.Ident)) {
+            String name = original.getParam();
+            return switch (name) {
+                case "if" -> new Token(TokenType.If);
+                case "else" -> new Token(TokenType.Else);
+                case "while" -> new Token(TokenType.While);
+                case "break" -> new Token(TokenType.Break);
+                case "continue" -> new Token(TokenType.Continue);
+                case "return" -> new Token(TokenType.Return);
+                default -> original;
+            };
+        }
+        return original;
+    }
 
 }
