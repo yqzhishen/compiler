@@ -24,7 +24,7 @@ public class SimpleState implements IState {
     }
 
     @Override
-    public TokenType getTokenType() {
+    public TokenType endTokenType() {
         return this.type;
     }
 }

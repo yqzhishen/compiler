@@ -25,7 +25,7 @@ public class Lex {
                 }
 
                 @Override
-                public TokenType getTokenType() {
+                public TokenType endTokenType() {
                     return null;
                 }
             },
@@ -38,7 +38,7 @@ public class Lex {
                 }
 
                 @Override
-                public TokenType getTokenType() {
+                public TokenType endTokenType() {
                     return TokenType.Ident;
                 }
             },
@@ -51,7 +51,7 @@ public class Lex {
                 }
 
                 @Override
-                public TokenType getTokenType() {
+                public TokenType endTokenType() {
                     return TokenType.Number;
                 }
             },

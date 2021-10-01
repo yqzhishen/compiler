@@ -33,7 +33,7 @@ public class Automaton {
     }
 
     public Token getToken() {
-        TokenType type = states[this.history.get(this.history.size() - 1)].getTokenType();
+        TokenType type = states[this.history.get(this.history.size() - 1)].endTokenType();
         if (type == null)
             return null;
         else if (type.equals(TokenType.Ident) || type.equals(TokenType.Number)) {
