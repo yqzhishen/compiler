@@ -1,3 +1,7 @@
+package lexer.automaton;
+
+import model.token.TokenType;
+
 public class SimpleState implements IState {
 
     private char condition;
@@ -24,7 +28,7 @@ public class SimpleState implements IState {
     }
 
     @Override
-    public TokenType endTokenType() {
+    public TokenType terminatorType() {
         return this.type;
     }
 }
