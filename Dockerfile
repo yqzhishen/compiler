@@ -1,4 +1,5 @@
 FROM openjdk:17
 WORKDIR /app/
 COPY src ./src
-RUN javac -d target `find ./src -name *.java`
+COPY srclist.txt .
+RUN javac -d target `cat src/srclist.txt`
