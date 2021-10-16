@@ -18,6 +18,6 @@ public class Stmt extends AbstractUnit {
 
     @Override
     public String dump() {
-        return "    return " + this.subUnits.get(1).dump() + '\n';
+        return "    ret " + this.subUnits.get(1).dump() + '\n';
     }
 }
