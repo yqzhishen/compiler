@@ -2,69 +2,46 @@ package model.token;
 
 public class Token {
 
-    private final TokenType type;
-
-    private String param;
+    protected final TokenType type;
 
     public Token(TokenType type) {
         this.type = type;
     }
 
-    public Token(TokenType type, String param) {
-        this.type = type;
-        this.param = param;
-    }
-
     @Override
     public String toString() {
-        if (this.param == null) {
-            return type.name();
-        }
-        else {
-            return type.name() + "(" + this.param + ")";
-        }
+        return this.type.name();
     }
 
     public TokenType getType() {
         return type;
     }
 
-    public String getParam() {
-        return param;
-    }
-
-    private Token filterIndent() {
+    protected Token filterIndent(String param) {
         if (this.type.equals(TokenType.Ident)) {
-            return switch (this.param) {
+            return switch (param) {
                 case "int" -> new Token(TokenType.Int);
                 case "main" -> new Token(TokenType.Main);
                 case "return" -> new Token(TokenType.Return);
-                default -> this;
+                default -> new Ident(param);
             };
         }
         return this;
     }
 
-    private Token filterNumber() {
+    protected Token filterNumber(String param) {
         return switch (this.type) {
-            case Dec -> new Token(TokenType.Number, this.param);
-            case Oct -> new Token(TokenType.Number, String.valueOf(Integer.parseInt(this.param, 8)));
-            case Hex -> new Token(TokenType.Number, String.valueOf(Integer.parseInt(this.param.substring(2), 16)));
+            case Dec -> new Number(Integer.parseInt(param));
+            case Oct -> new Number(Integer.parseInt(param, 8));
+            case Hex -> new Number(Integer.parseInt(param.substring(2), 16));
             default -> this;
         };
     }
 
-    private Token filterParam() {
-        if (!this.type.equals(TokenType.Ident) && !this.type.equals(TokenType.Number))
-            this.param = null;
-        return this;
-    }
-
-    public Token filter() {
+    public Token filter(String param) {
         return this
-                .filterIndent()
-                .filterNumber()
-                .filterParam();
+                .filterIndent(param)
+                .filterNumber(param);
     }
 
 }

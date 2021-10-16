@@ -239,7 +239,7 @@ public class Automaton {
             return null;
         StringBuilder builder = new StringBuilder();
         contents.forEach(builder::append);
-        return new Token(type, builder.toString()).filter();
+        return new Token(type).filter(builder.toString());
     }
 
     public void reset() {
