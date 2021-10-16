@@ -3,5 +3,6 @@
 image = { source = "dockerfile", path = "." }
 
 run = [
-    "java lexer.Lexer $input",
+    "cd target",
+    "java Compiler $input $ir",
 ]
