@@ -12,8 +12,9 @@ public class Compiler {
         FileReader fr = new FileReader(args[0]);
         BufferedReader br = new BufferedReader(fr, 256);
         PushbackReader pr = new PushbackReader(br);
-        Lexer lexer = new Lexer(pr);
-        SyntaxParser parser = new SyntaxParser(lexer);
+        Lexer.setReader(pr);
+        Lexer lexer = Lexer.getLexer();
+        SyntaxParser parser = SyntaxParser.getParser();
         FileWriter writer = new FileWriter(args[1]);
         try {
             IUnit compUnit = parser.parse();

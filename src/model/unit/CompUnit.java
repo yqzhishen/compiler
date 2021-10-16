@@ -2,16 +2,11 @@ package model.unit;
 
 import error.LexicalError;
 import error.SyntaxError;
-import lexer.Lexer;
 import model.token.TokenType;
 
 import java.io.IOException;
 
 public class CompUnit extends AbstractUnit {
-
-    public CompUnit(Lexer lexer) {
-        super(lexer);
-    }
 
     @Override
     public IUnit build() throws LexicalError, SyntaxError, IOException {
@@ -19,7 +14,7 @@ public class CompUnit extends AbstractUnit {
         this.append(TokenType.Main);
         this.append(TokenType.LPar);
         this.append(TokenType.RPar);
-        this.subUnits.add(new Block(this.lexer).build());
+        this.subUnits.add(new Block().build());
         return this;
     }
 

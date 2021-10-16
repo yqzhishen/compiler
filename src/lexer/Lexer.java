@@ -1,39 +1,48 @@
 package lexer;
 
-import lexer.automaton.Automaton;
 import error.LexicalError;
+import lexer.automaton.Automaton;
 import model.token.Token;
 import model.token.TokenType;
 
 import java.io.*;
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Lexer {
 
-    private final PushbackReader reader;
+    private static PushbackReader reader;
+
+    private static final Lexer lexer = new Lexer();
+
+    public static void setReader(PushbackReader reader) {
+        Lexer.reader = reader;
+    }
+
+    public static Lexer getLexer() {
+        return lexer;
+    }
+
+    private Lexer() { }
 
     private final Automaton automaton = new Automaton();
 
-    private final Stack<Token> buffer = new Stack<>();
-
-    public Lexer(PushbackReader reader) {
-        this.reader = reader;
-    }
+    private final Queue<Token> buffer = new LinkedList<>();
 
     public Token readToken() throws LexicalError, IOException {
         if (!this.buffer.isEmpty())
-            return this.buffer.pop();
+            return this.buffer.poll();
         int c = reader.read();
         while (c != -1) {
             char ch = (char) c;
             if (!this.automaton.push(ch)) {
-                this.reader.unread(c);
+                reader.unread(c);
                 Token token = null;
                 while (!this.automaton.isEmpty()) {
                     token = this.automaton.getToken();
                     if (token != null)
                         break;
-                    this.reader.unread(this.automaton.pop());
+                    reader.unread(this.automaton.pop());
                 }
                 if (this.automaton.isEmpty())
                     throw new LexicalError();
@@ -43,7 +52,7 @@ public class Lexer {
                         return token;
                 }
             }
-            c = this.reader.read();
+            c = reader.read();
         }
         if (!this.automaton.isEmpty()) {
             Token token = this.automaton.getToken();
@@ -56,29 +65,14 @@ public class Lexer {
         return null;
     }
 
-    public void unreadToken(Token token) {
-        this.buffer.push(token);
-    }
-
-    public static void main(String[] args) throws IOException {
-        File src = new File(args[0]);
-        FileReader fr = new FileReader(src);
-        BufferedReader br = new BufferedReader(fr, 256);
-        PushbackReader pr = new PushbackReader(br);
-        Lexer lexer = new Lexer(pr);
-        try {
-            Token token = lexer.readToken();
-            while (token != null) {
-                System.out.println(token);
-                token = lexer.readToken();
-            }
+    public Token nextToken() throws LexicalError, IOException {
+        if (this.buffer.isEmpty()) {
+            Token token = this.readToken();
+            if (token != null)
+                this.buffer.offer(token);
+            return token;
         }
-        catch (LexicalError err) {
-            System.out.println("Err");
-        }
-        pr.close();
-        br.close();
-        fr.close();
+        return this.buffer.peek();
     }
 
 }

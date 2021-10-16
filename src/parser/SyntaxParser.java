@@ -2,16 +2,23 @@ package parser;
 
 import error.LexicalError;
 import error.SyntaxError;
-import lexer.Lexer;
 import model.unit.CompUnit;
 import model.unit.IUnit;
 
 import java.io.IOException;
 
-public record SyntaxParser(Lexer lexer) {
+public class SyntaxParser {
+
+    private static final SyntaxParser parser = new SyntaxParser();
+
+    public static SyntaxParser getParser() {
+        return parser;
+    }
+
+    private SyntaxParser() { }
 
     public IUnit parse() throws LexicalError, SyntaxError, IOException {
-        return new CompUnit(this.lexer).build();
+        return new CompUnit().build();
     }
 
 }

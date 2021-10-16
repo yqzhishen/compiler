@@ -14,11 +14,7 @@ public abstract class AbstractUnit implements IUnit {
 
     protected final List<IUnit> subUnits = new ArrayList<>();
 
-    protected final Lexer lexer;
-
-    public AbstractUnit(Lexer lexer) {
-        this.lexer = lexer;
-    }
+    protected final Lexer lexer = Lexer.getLexer();
 
     @Override
     public boolean isTerminator() {
