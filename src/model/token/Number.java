@@ -18,4 +18,9 @@ public class Number extends Token {
         return super.toString() + "(" + this.value + ")";
     }
 
+    @Override
+    public String dump() {
+        return "i32 " + this.value;
+    }
+
 }

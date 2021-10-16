@@ -1,6 +1,10 @@
 package model.token;
 
-public class Token {
+import model.unit.IUnit;
+
+import java.util.List;
+
+public class Token implements IUnit {
 
     protected final TokenType type;
 
@@ -44,4 +48,18 @@ public class Token {
                 .filterNumber(param);
     }
 
+    @Override
+    public boolean isTerminator() {
+        return true;
+    }
+
+    @Override
+    public List<IUnit> subUnits() {
+        return null;
+    }
+
+    @Override
+    public String dump() {
+        return this.type.dump();
+    }
 }

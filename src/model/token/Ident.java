@@ -18,4 +18,9 @@ public class Ident extends Token {
         return super.toString() + "(" + this.name + ")";
     }
 
+    @Override
+    public String dump() {
+        return this.name;
+    }
+
 }

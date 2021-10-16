@@ -1,10 +1,12 @@
 package lexer;
 
 import lexer.automaton.Automaton;
-import error.LexError;
+import error.LexicalError;
 import model.token.Token;
+import model.token.TokenType;
 
 import java.io.*;
+import java.util.Stack;
 
 public class Lexer {
 
@@ -12,11 +14,15 @@ public class Lexer {
 
     private final Automaton automaton = new Automaton();
 
+    private final Stack<Token> buffer = new Stack<>();
+
     public Lexer(PushbackReader reader) {
         this.reader = reader;
     }
 
-    public Token readToken() throws LexError, IOException {
+    public Token readToken() throws LexicalError, IOException {
+        if (!this.buffer.isEmpty())
+            return this.buffer.pop();
         int c = reader.read();
         while (c != -1) {
             char ch = (char) c;
@@ -30,10 +36,11 @@ public class Lexer {
                     this.reader.unread(this.automaton.pop());
                 }
                 if (this.automaton.isEmpty())
-                    throw new LexError();
+                    throw new LexicalError();
                 if (token != null) {
                     this.automaton.reset();
-                    return token;
+                    if (!token.getType().equals(TokenType.Comment))
+                        return token;
                 }
             }
             c = this.reader.read();
@@ -41,11 +48,16 @@ public class Lexer {
         if (!this.automaton.isEmpty()) {
             Token token = this.automaton.getToken();
             if (token == null)
-                throw new LexError();
+                throw new LexicalError();
             this.automaton.reset();
-            return token;
+            if (!token.getType().equals(TokenType.Comment))
+                return token;
         }
         return null;
+    }
+
+    public void unreadToken(Token token) {
+        this.buffer.push(token);
     }
 
     public static void main(String[] args) throws IOException {
@@ -61,7 +73,7 @@ public class Lexer {
                 token = lexer.readToken();
             }
         }
-        catch (LexError err) {
+        catch (LexicalError err) {
             System.out.println("Err");
         }
         pr.close();
