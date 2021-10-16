@@ -1,0 +1,17 @@
+./src/lexer/Lexer.java
+./src/lexer/automaton/IState.java
+./src/lexer/automaton/SimpleState.java
+./src/lexer/automaton/Automaton.java
+./src/error/SyntaxError.java
+./src/error/LexicalError.java
+./src/model/token/Ident.java
+./src/model/token/TokenType.java
+./src/model/token/Token.java
+./src/model/token/Number.java
+./src/model/unit/Stmt.java
+./src/model/unit/AbstractUnit.java
+./src/model/unit/IUnit.java
+./src/model/unit/CompUnit.java
+./src/model/unit/Block.java
+./src/parser/SyntaxParser.java
+./src/Compiler.java
