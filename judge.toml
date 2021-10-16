@@ -3,6 +3,5 @@
 image = { source = "dockerfile", path = "." }
 
 run = [
-    "cd target",
-    "java Compiler $input $ir",
+    "cd target && java Compiler $input $ir",
 ]
