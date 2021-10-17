@@ -153,7 +153,7 @@ public class Automaton {
 
                 @Override
                 public TokenType terminatorType() {
-                    return null;
+                    return TokenType.Comment;
                 }
             },
             // 9
