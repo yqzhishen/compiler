@@ -4,6 +4,7 @@ import model.token.Token;
 import model.token.TokenType;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class Automaton {
 
@@ -12,7 +13,7 @@ public class Automaton {
             new IState() {
                 @Override
                 public int recognize(char ch) {
-                    if (Character.isWhitespace(ch))
+                    if (Pattern.matches("\\s", Character.toString(ch)))
                         return 0;
                     if (ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z')
                         return 1;
@@ -145,7 +146,7 @@ public class Automaton {
             new IState() {
                 @Override
                 public int recognize(char ch) {
-                    if (ch == '\n')
+                    if (ch == '\n' || ch == '\r')
                         return 10;
                     return 8;
                 }
