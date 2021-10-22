@@ -7,12 +7,8 @@ import model.token.Token;
 import model.token.TokenType;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class AbstractUnit implements IUnit {
-
-    protected final List<IUnit> subUnits = new ArrayList<>();
 
     protected final Lexer lexer = Lexer.getLexer();
 
@@ -22,25 +18,10 @@ public abstract class AbstractUnit implements IUnit {
     }
 
     @Override
-    public List<IUnit> subUnits() {
-        return this.subUnits;
-    }
-
-    @Override
     public abstract IUnit build() throws IOException, CompileError;
 
     @Override
-    public String dump() {
-        StringBuilder builder = new StringBuilder();
-        int i = 0;
-        for (; i < this.subUnits.size() - 1; ++i) {
-            builder.append(this.subUnits.get(i).dump());
-            builder.append(' ');
-        }
-        if (i < this.subUnits.size())
-            builder.append(this.subUnits.get(i).dump());
-        return builder.toString();
-    }
+    public abstract String dump();
 
     protected Token require(TokenType ... types) throws IOException, CompileError {
         Token token = this.lexer.readToken();
@@ -55,7 +36,6 @@ public abstract class AbstractUnit implements IUnit {
         }
         if (!match)
             throw new SyntaxError(token.getPos(), types, token.getType());
-        this.subUnits.add(token);
         return token;
     }
 

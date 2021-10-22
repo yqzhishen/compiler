@@ -7,19 +7,17 @@ import java.io.IOException;
 
 public class CompUnit extends AbstractUnit {
 
+    private FuncDef funcDef;
+
     @Override
-    public IUnit build() throws IOException, CompileError {
-        this.require(TokenType.Int);
-        this.require(TokenType.Main);
-        this.require(TokenType.LPar);
-        this.require(TokenType.RPar);
-        this.subUnits.add(new Block().build());
+    public CompUnit build() throws IOException, CompileError {
+        this.funcDef = new FuncDef().build();
         return this;
     }
 
     @Override
     public String dump() {
-        return "define dso_local i32 @main() " + this.subUnits.get(4).dump() + '\n';
+        return this.funcDef.dump() + '\n';
     }
 
 }

@@ -3,8 +3,6 @@ package model.token;
 import model.unit.IUnit;
 import reader.FilePosition;
 
-import java.util.List;
-
 public class Token implements IUnit {
 
     protected final TokenType type;
@@ -63,11 +61,6 @@ public class Token implements IUnit {
     @Override
     public boolean isTerminator() {
         return true;
-    }
-
-    @Override
-    public List<IUnit> subUnits() {
-        return null;
     }
 
     @Override

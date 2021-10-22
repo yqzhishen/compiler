@@ -9,17 +9,19 @@ import java.io.IOException;
 
 public class Block extends AbstractUnit {
 
+    private Stmt stmt;
+
     @Override
-    public IUnit build() throws IOException, CompileError {
+    public Block build() throws IOException, CompileError {
         this.require(TokenType.LBrace);
-        this.subUnits.add(new Stmt().build());
+        this.stmt = new Stmt().build();
         this.require(TokenType.RBrace);
         return this;
     }
 
     @Override
     public String dump() {
-        return "{\n" + this.subUnits.get(1).dump() + "}";
+        return "{\n    " + this.stmt.dump() + "\n}";
     }
 
 }

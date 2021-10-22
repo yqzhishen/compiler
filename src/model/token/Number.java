@@ -9,7 +9,7 @@ public class Number extends Token {
         this.value = value;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
     }
 
