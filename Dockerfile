@@ -3,3 +3,4 @@ WORKDIR /app/
 COPY src ./src
 COPY path.txt .
 RUN javac -d target `cat path.txt`
+WORKDIR /app/target/
