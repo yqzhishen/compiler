@@ -1,6 +1,6 @@
 package model.unit;
 
-import error.LexicalError;
+import error.CompileError;
 import error.SyntaxError;
 import lexer.Lexer;
 import model.token.Token;
@@ -27,7 +27,7 @@ public abstract class AbstractUnit implements IUnit {
     }
 
     @Override
-    public abstract IUnit build() throws LexicalError, SyntaxError, IOException;
+    public abstract IUnit build() throws IOException, CompileError;
 
     @Override
     public String dump() {
@@ -42,11 +42,21 @@ public abstract class AbstractUnit implements IUnit {
         return builder.toString();
     }
 
-    protected void append(TokenType type) throws LexicalError, IOException, SyntaxError {
+    protected Token require(TokenType ... types) throws IOException, CompileError {
         Token token = this.lexer.readToken();
-        if (token == null || !token.getType().equals(type))
-            throw new SyntaxError();
+        if (token == null)
+            throw new SyntaxError(Lexer.getReader().getPos(), types, null);
+        boolean match = false;
+        for (TokenType type : types) {
+            if (type.equals(token.getType())) {
+                match = true;
+                break;
+            }
+        }
+        if (!match)
+            throw new SyntaxError(token.getPos(), types, token.getType());
         this.subUnits.add(token);
+        return token;
     }
 
 }

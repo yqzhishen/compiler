@@ -1,36 +1,36 @@
-import error.LexicalError;
-import error.SyntaxError;
+import error.CompileError;
 import lexer.Lexer;
 import model.unit.IUnit;
 import parser.SyntaxParser;
+import reader.CompileReader;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Compiler {
 
     public static void main(String[] args) throws IOException {
-        FileReader fr = new FileReader(args[0]);
-        BufferedReader br = new BufferedReader(fr, 256);
-        PushbackReader pr = new PushbackReader(br);
-        Lexer.setReader(pr);
-        Lexer lexer = Lexer.getLexer();
+        CompileReader reader = new CompileReader(args[0]);
+        Lexer.setReader(reader);
         SyntaxParser parser = SyntaxParser.getParser();
-        FileWriter writer = new FileWriter(args[1]);
+        FileWriter writer = null;
         try {
             IUnit compUnit = parser.parse();
-            if (lexer.readToken() != null)
+            if (Lexer.getLexer().readToken() != null)
                 System.exit(1);
+            writer = new FileWriter(args[1]);
             writer.write(compUnit.dump());
             writer.flush();
         }
-        catch (LexicalError | SyntaxError error) {
+        catch (CompileError error) {
+            System.err.println("----- Compile Error -----");
+            System.err.println(error.getMessage());
             System.exit(1);
         }
         finally {
-            writer.close();
-            pr.close();
-            br.close();
-            fr.close();
+            reader.close();
+            if (writer != null)
+                writer.close();
         }
     }
 

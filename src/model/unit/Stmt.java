@@ -1,5 +1,6 @@
 package model.unit;
 
+import error.CompileError;
 import error.LexicalError;
 import error.SyntaxError;
 import model.token.TokenType;
@@ -9,10 +10,10 @@ import java.io.IOException;
 public class Stmt extends AbstractUnit {
 
     @Override
-    public IUnit build() throws LexicalError, SyntaxError, IOException {
-        this.append(TokenType.Return);
-        this.append(TokenType.Number);
-        this.append(TokenType.Semicolon);
+    public IUnit build() throws IOException, CompileError {
+        this.require(TokenType.Return);
+        this.require(TokenType.Number);
+        this.require(TokenType.Semicolon);
         return this;
     }
 

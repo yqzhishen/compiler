@@ -1,7 +1,6 @@
 package model.unit;
 
-import error.LexicalError;
-import error.SyntaxError;
+import error.CompileError;
 import model.token.TokenType;
 
 import java.io.IOException;
@@ -9,11 +8,11 @@ import java.io.IOException;
 public class CompUnit extends AbstractUnit {
 
     @Override
-    public IUnit build() throws LexicalError, SyntaxError, IOException {
-        this.append(TokenType.Int);
-        this.append(TokenType.Main);
-        this.append(TokenType.LPar);
-        this.append(TokenType.RPar);
+    public IUnit build() throws IOException, CompileError {
+        this.require(TokenType.Int);
+        this.require(TokenType.Main);
+        this.require(TokenType.LPar);
+        this.require(TokenType.RPar);
         this.subUnits.add(new Block().build());
         return this;
     }

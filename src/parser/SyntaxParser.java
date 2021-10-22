@@ -1,5 +1,6 @@
 package parser;
 
+import error.CompileError;
 import error.LexicalError;
 import error.SyntaxError;
 import model.unit.CompUnit;
@@ -17,7 +18,7 @@ public class SyntaxParser {
 
     private SyntaxParser() { }
 
-    public IUnit parse() throws LexicalError, SyntaxError, IOException {
+    public IUnit parse() throws IOException, CompileError {
         return new CompUnit().build();
     }
 

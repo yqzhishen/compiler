@@ -1,12 +1,15 @@
 package model.token;
 
 import model.unit.IUnit;
+import reader.FilePosition;
 
 import java.util.List;
 
 public class Token implements IUnit {
 
     protected final TokenType type;
+
+    protected FilePosition pos;
 
     public Token(TokenType type) {
         this.type = type;
@@ -19,6 +22,15 @@ public class Token implements IUnit {
 
     public TokenType getType() {
         return type;
+    }
+
+    public Token setPos(FilePosition pos) {
+        this.pos = pos;
+        return this;
+    }
+
+    public FilePosition getPos() {
+        return this.pos;
     }
 
     protected Token filterIndent(String param) {

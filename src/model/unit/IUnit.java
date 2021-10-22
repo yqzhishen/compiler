@@ -1,7 +1,6 @@
 package model.unit;
 
-import error.LexicalError;
-import error.SyntaxError;
+import error.CompileError;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,7 +11,7 @@ public interface IUnit {
 
     List<IUnit> subUnits();
 
-    default IUnit build() throws LexicalError, SyntaxError, IOException {
+    default IUnit build() throws IOException, CompileError {
         return null;
     }
 
