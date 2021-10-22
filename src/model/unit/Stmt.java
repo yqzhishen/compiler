@@ -19,6 +19,6 @@ public class Stmt extends AbstractUnit {
 
     @Override
     public String dump() {
-        return "ret i32 " + this.expr.dump();
+        return "ret i32 " + this.expr.calculate();
     }
 }
