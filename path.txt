@@ -1,4 +1,5 @@
 ./src/Compiler.java
+./src/error/CompileError.java
 ./src/error/LexicalError.java
 ./src/error/SyntaxError.java
 ./src/lexer/Lexer.java
@@ -10,8 +11,16 @@
 ./src/model/token/Token.java
 ./src/model/token/TokenType.java
 ./src/model/unit/AbstractUnit.java
+./src/model/unit/AddExpr.java
 ./src/model/unit/Block.java
 ./src/model/unit/CompUnit.java
+./src/model/unit/Expr.java
+./src/model/unit/FuncDef.java
+./src/model/unit/IExpr.java
 ./src/model/unit/IUnit.java
+./src/model/unit/MulExpr.java
 ./src/model/unit/Stmt.java
+./src/model/unit/Term.java
 ./src/parser/SyntaxParser.java
+./src/reader/CompileReader.java
+./src/reader/FilePosition.java

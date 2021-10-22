@@ -4,6 +4,7 @@ import error.LexicalError;
 import lexer.automaton.Automaton;
 import model.token.Token;
 import model.token.TokenType;
+import parser.SyntaxParser;
 import reader.CompileReader;
 import reader.FilePosition;
 
@@ -80,14 +81,26 @@ public class Lexer {
         return null;
     }
 
-    public Token nextToken() throws LexicalError, IOException {
+    public TokenType nextType() throws LexicalError, IOException {
         if (this.buffer.isEmpty()) {
             Token token = this.readToken();
-            if (token != null)
-                this.buffer.offer(token);
-            return token;
+            if (token == null)
+                return null;
+            this.buffer.offer(token);
+            return token.getType();
         }
-        return this.buffer.peek();
+        return this.buffer.peek().getType();
+    }
+
+    public static void main(String[] args) throws IOException, LexicalError {
+        CompileReader reader = new CompileReader("test/input.txt");
+        Lexer.setReader(reader);
+        Lexer lexer = Lexer.getLexer();
+        Token token = lexer.readToken();
+        while (token != null) {
+            System.out.println(token);
+            token = lexer.readToken();
+        }
     }
 
 }

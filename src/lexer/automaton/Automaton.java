@@ -29,6 +29,10 @@ public class Automaton {
                         case '{' -> 15;
                         case '}' -> 16;
                         case ';' -> 17;
+                        case '+' -> 18;
+                        case '-' -> 19;
+                        case '*' -> 20;
+                        case '%' -> 21;
                         default -> -1;
                     };
                 }
@@ -139,7 +143,7 @@ public class Automaton {
 
                 @Override
                 public TokenType terminatorType() {
-                    return null;
+                    return TokenType.Div;
                 }
             },
             // 8
@@ -199,7 +203,15 @@ public class Automaton {
             // 16
             new SimpleState(TokenType.RBrace),
             // 17
-            new SimpleState(TokenType.Semicolon)
+            new SimpleState(TokenType.Semicolon),
+            // 18
+            new SimpleState(TokenType.Plus),
+            // 19
+            new SimpleState(TokenType.Sub),
+            // 20
+            new SimpleState(TokenType.Mul),
+            // 21
+            new SimpleState(TokenType.Mod)
     };
 
     private int current = 0;

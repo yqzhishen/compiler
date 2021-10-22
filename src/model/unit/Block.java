@@ -1,8 +1,6 @@
 package model.unit;
 
 import error.CompileError;
-import error.LexicalError;
-import error.SyntaxError;
 import model.token.TokenType;
 
 import java.io.IOException;

@@ -1,7 +1,6 @@
 package model.unit;
 
 import error.CompileError;
-import model.token.TokenType;
 
 import java.io.IOException;
 

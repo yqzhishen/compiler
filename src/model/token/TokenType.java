@@ -5,6 +5,7 @@ public enum TokenType {
     Main("@main"), Int("i32"), Return("return"),
     LPar("("), RPar(")"),
     LBrace("{"), RBrace("}"),
+    Plus, Sub, Mul, Div, Mod,
     Semicolon(";"), Ident, Number, Dec, Oct, Hex, Comment;
 
 

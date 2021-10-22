@@ -1,8 +1,10 @@
 package model.token;
 
-public class Number extends Token {
+import model.unit.IExpr;
 
-    int value;
+public class Number extends Token implements IExpr {
+
+    private int value;
 
     public Number(int value) {
         super(TokenType.Number);
@@ -13,6 +15,10 @@ public class Number extends Token {
         return this.value;
     }
 
+    public void setValue(int value) {
+        this.value = value;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "(" + this.value + ")";
@@ -21,6 +27,11 @@ public class Number extends Token {
     @Override
     public String dump() {
         return "i32 " + this.value;
+    }
+
+    @Override
+    public int calculate() {
+        return this.value;
     }
 
 }
