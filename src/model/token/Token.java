@@ -65,6 +65,7 @@ public class Token implements IUnit {
 
     @Override
     public String dump() {
-        return this.type.dump();
+        return null;
     }
+
 }
