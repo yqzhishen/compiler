@@ -1,4 +1,5 @@
 ./src/Compiler.java
+./src/analyzer/SemanticAnalyzer.java
 ./src/error/CompileError.java
 ./src/error/LexicalError.java
 ./src/error/SyntaxError.java
