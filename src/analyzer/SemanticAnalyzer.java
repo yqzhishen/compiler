@@ -66,7 +66,7 @@ public class SemanticAnalyzer {
             case Sub -> "sub";
             case Mul -> "mul";
             case Div -> "sdiv";
-            case Mod -> "rems";
+            case Mod -> "srem";
             default -> null;
         };
     }

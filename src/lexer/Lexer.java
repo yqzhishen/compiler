@@ -93,7 +93,7 @@ public class Lexer {
     }
 
     public static void main(String[] args) throws IOException, LexicalError {
-        CompileReader reader = new CompileReader("test/input.txt");
+        CompileReader reader = new CompileReader("test/input.c");
         Lexer.setReader(reader);
         Lexer lexer = Lexer.getLexer();
         Token token = lexer.readToken();
