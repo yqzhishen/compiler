@@ -11,12 +11,22 @@ public class Expr extends AbstractUnit implements IExpr {
 
     protected TokenType operator;
 
+    protected int count;
+
     public Expr() { }
 
     public Expr(IExpr leftExpr, TokenType operator, IExpr rightExpr) {
         this.elements[0] = leftExpr;
         this.operator = operator;
         this.elements[1] = rightExpr;
+    }
+
+    public IExpr[] getElements() {
+        return this.elements;
+    }
+
+    public TokenType getOperator() {
+        return this.operator;
     }
 
     @Override
@@ -27,6 +37,14 @@ public class Expr extends AbstractUnit implements IExpr {
     @Override
     public String dump() {
         return String.valueOf(this.calculate());
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     @Override

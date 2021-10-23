@@ -9,6 +9,10 @@ public class Block extends AbstractUnit {
 
     private Stmt stmt;
 
+    public Stmt getStmt() {
+        return this.stmt;
+    }
+
     @Override
     public Block build() throws IOException, CompileError {
         this.require(TokenType.LBrace);

@@ -18,7 +18,7 @@ public class SyntaxParser {
 
     private SyntaxParser() { }
 
-    public IUnit parse() throws IOException, CompileError {
+    public CompUnit parse() throws IOException, CompileError {
         return new CompUnit().build();
     }
 

@@ -1,6 +1,7 @@
+import analyzer.SemanticAnalyzer;
 import error.CompileError;
 import lexer.Lexer;
-import model.unit.IUnit;
+import model.unit.CompUnit;
 import parser.SyntaxParser;
 import reader.CompileReader;
 
@@ -15,11 +16,12 @@ public class Compiler {
         SyntaxParser parser = SyntaxParser.getParser();
         FileWriter writer = null;
         try {
-            IUnit compUnit = parser.parse();
+            CompUnit compUnit = parser.parse();
             if (Lexer.getLexer().readToken() != null)
                 System.exit(1);
             writer = new FileWriter(args[1]);
-            writer.write(compUnit.dump());
+            writer.write(SemanticAnalyzer.getAnalyzer().dump(compUnit));
+            // writer.write(compUnit.dump());
             writer.flush();
         }
         catch (CompileError error) {

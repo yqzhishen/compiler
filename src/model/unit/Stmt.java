@@ -9,6 +9,10 @@ public class Stmt extends AbstractUnit {
 
     private IExpr expr;
 
+    public IExpr getExpr() {
+        return this.expr;
+    }
+
     @Override
     public Stmt build() throws IOException, CompileError {
         this.require(TokenType.Return);

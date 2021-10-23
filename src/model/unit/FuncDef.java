@@ -13,6 +13,10 @@ public class FuncDef extends AbstractUnit {
 
     private Block funcBlock;
 
+    public Block getFuncBlock() {
+        return this.funcBlock;
+    }
+
     @Override
     public FuncDef build() throws IOException, CompileError {
         this.require(TokenType.Int);
