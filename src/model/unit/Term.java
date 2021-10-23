@@ -1,7 +1,6 @@
 package model.unit;
 
 import error.CompileError;
-import lexer.Lexer;
 import model.token.Number;
 import model.token.Token;
 import model.token.TokenType;
