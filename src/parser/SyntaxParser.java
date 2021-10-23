@@ -1,10 +1,7 @@
 package parser;
 
 import error.CompileError;
-import error.LexicalError;
-import error.SyntaxError;
 import model.unit.CompUnit;
-import model.unit.IUnit;
 
 import java.io.IOException;
 

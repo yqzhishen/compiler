@@ -27,7 +27,7 @@ public class SemanticAnalyzer {
         IExpr expr = unit
                 .getFuncDefs().get(0)
                 .getFuncBlock()
-                .getStmt()
+                .getStatements().get(0)
                 .getExpr();
         if (expr instanceof Number number) {
             this.joiner.add("ret i32 " + number.getValue());
