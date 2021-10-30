@@ -4,11 +4,10 @@ import error.LexicalError;
 import lexer.automaton.Automaton;
 import model.token.Token;
 import model.token.TokenType;
-import parser.SyntaxParser;
 import reader.CompileReader;
 import reader.FilePosition;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -93,7 +92,7 @@ public class Lexer {
     }
 
     public static void main(String[] args) throws IOException, LexicalError {
-        CompileReader reader = new CompileReader("test/input.c");
+        CompileReader reader = new CompileReader("test/input.sy");
         Lexer.setReader(reader);
         Lexer lexer = Lexer.getLexer();
         Token token = lexer.readToken();
