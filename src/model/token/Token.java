@@ -34,6 +34,7 @@ public class Token implements IUnit {
     protected Token filterIndent(String param) {
         if (this.type.equals(TokenType.Ident)) {
             return switch (param) {
+                case "const" -> new Token(TokenType.Const);
                 case "int" -> new Token(TokenType.Int);
                 case "main" -> new Token(TokenType.Main);
                 case "return" -> new Token(TokenType.Return);

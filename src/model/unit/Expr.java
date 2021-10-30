@@ -48,7 +48,7 @@ public class Expr extends AbstractUnit implements IExpr {
     }
 
     @Override
-    public int calculate() {
+    public Integer calculate() {
         int[] values = new int[] {
                 this.elements[0].calculate(),
                 this.elements[1].calculate()

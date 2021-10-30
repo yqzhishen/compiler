@@ -2,7 +2,6 @@ package analyzer;
 
 import model.token.Number;
 import model.token.TokenType;
-import model.unit.CompUnit;
 import model.unit.Expr;
 import model.unit.IExpr;
 
@@ -22,6 +21,7 @@ public class SemanticAnalyzer {
 
     private SemanticAnalyzer() { }
 
+/*
     public String dump(CompUnit unit) {
         StringBuilder builder = new StringBuilder("define dso_local i32 @main() {");
         IExpr expr = unit
@@ -40,6 +40,7 @@ public class SemanticAnalyzer {
         builder.append("}\n");
         return builder.toString();
     }
+*/
 
     public void dumpExpr(Expr expr) {
         IExpr[] elements = expr.getElements();

@@ -18,7 +18,7 @@ public class AddExpr extends Expr {
                     if (this.elements[1] != null) {
                         this.elements[0] = new Expr(this.elements[0], this.operator, this.elements[1]);
                     }
-                    this.operator = this.lexer.readToken().getType();
+                    this.operator = this.lexer.getToken().getType();
                     this.elements[1] = new MulExpr().build();
                 }
                 default -> finished = true;

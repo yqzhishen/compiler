@@ -30,7 +30,7 @@ public class Number extends Token implements IExpr {
     }
 
     @Override
-    public int calculate() {
+    public Integer calculate() {
         return this.value;
     }
 

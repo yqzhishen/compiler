@@ -24,7 +24,7 @@ public abstract class AbstractUnit implements IUnit {
     public abstract String dump();
 
     protected Token require(TokenType ... types) throws IOException, CompileError {
-        Token token = this.lexer.readToken();
+        Token token = this.lexer.getToken();
         if (token == null)
             throw new SyntaxError(Lexer.getReader().getPos(), types, null);
         boolean match = false;

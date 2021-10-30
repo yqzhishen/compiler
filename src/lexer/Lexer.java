@@ -9,7 +9,7 @@ import reader.FilePosition;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 
 public class Lexer {
 
@@ -33,15 +33,13 @@ public class Lexer {
 
     private final Automaton automaton = new Automaton();
 
-    private final Queue<Token> buffer = new LinkedList<>();
+    private final List<Token> buffer = new LinkedList<>();
 
     private FilePosition pos = new FilePosition();
 
     private final LexicalError error = new LexicalError();
 
-    public Token readToken() throws LexicalError, IOException {
-        if (!this.buffer.isEmpty())
-            return this.buffer.poll();
+    private Token readToken() throws LexicalError, IOException {
         int c = reader.read();
         while (c != -1) {
             if (this.automaton.isEmpty())
@@ -80,25 +78,38 @@ public class Lexer {
         return null;
     }
 
+    public Token getToken() throws LexicalError, IOException {
+        if (!this.buffer.isEmpty())
+            return this.buffer.remove(0);
+        return this.readToken();
+    }
+
     public TokenType nextType() throws LexicalError, IOException {
-        if (this.buffer.isEmpty()) {
+        return this.nextType(0);
+    }
+
+    public TokenType nextType(int ahead) throws LexicalError, IOException {
+        if (ahead < this.buffer.size())
+            return this.buffer.get(ahead).getType();
+        TokenType type = null;
+        while (ahead >= this.buffer.size()) {
             Token token = this.readToken();
             if (token == null)
-                return null;
-            this.buffer.offer(token);
-            return token.getType();
+                break;
+            type = token.getType();
+            this.buffer.add(token);
         }
-        return this.buffer.peek().getType();
+        return type;
     }
 
     public static void main(String[] args) throws IOException, LexicalError {
         CompileReader reader = new CompileReader("test/input.sy");
         Lexer.setReader(reader);
         Lexer lexer = Lexer.getLexer();
-        Token token = lexer.readToken();
+        Token token = lexer.getToken();
         while (token != null) {
             System.out.println(token);
-            token = lexer.readToken();
+            token = lexer.getToken();
         }
     }
 

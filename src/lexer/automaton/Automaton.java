@@ -15,7 +15,7 @@ public class Automaton {
                 public int recognize(char ch) {
                     if (Pattern.matches("\\s", Character.toString(ch)))
                         return 0;
-                    if (ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z')
+                    if (ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z' || ch == '_')
                         return 1;
                     if (ch >= '1' && ch <= '9')
                         return 2;
@@ -33,6 +33,8 @@ public class Automaton {
                         case '-' -> 19;
                         case '*' -> 20;
                         case '%' -> 21;
+                        case '=' -> 22;
+                        case ',' -> 24;
                         default -> -1;
                     };
                 }
@@ -46,7 +48,7 @@ public class Automaton {
             new IState() {
                 @Override
                 public int recognize(char ch) {
-                    if (ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z' || ch >= '0' && ch <= '9')
+                    if (ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z' || ch >= '0' && ch <= '9' || ch == '_')
                         return 1;
                     return -1;
                 }
@@ -211,7 +213,13 @@ public class Automaton {
             // 20
             new SimpleState(TokenType.Mul),
             // 21
-            new SimpleState(TokenType.Mod)
+            new SimpleState(TokenType.Mod),
+            // 22
+            new SimpleState('=', 23, TokenType.Assign),
+            // 23
+            new SimpleState(TokenType.Equal),
+            // 24
+            new SimpleState(TokenType.Comma),
     };
 
     private int current = 0;

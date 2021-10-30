@@ -8,6 +8,7 @@ public class FilePosition {
 
     private int column = 0;
 
+    // TODO: 2021/10/31 Move this to CompileReader
     private final Stack<Integer> stack = new Stack<>();
 
     public FilePosition() { }
