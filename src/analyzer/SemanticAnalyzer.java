@@ -20,7 +20,7 @@ public class SemanticAnalyzer {
 
     private final SymTable table = SymTable.getSymTable();
 
-    private int tag = 0;
+    private int tag = 1;
 
     private final StringJoiner joiner = new StringJoiner("\n    ", "\n    ", "\n");
 
