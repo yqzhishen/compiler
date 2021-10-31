@@ -8,20 +8,12 @@ import model.unit.CompUnit;
 import parser.SyntaxParser;
 import reader.CompileReader;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class Compiler {
 
     public static void main(String[] args) throws IOException {
-        FileReader reader = new FileReader(args[0]);
-        int c = reader.read();
-        while (c != -1) {
-            System.out.print((char) c);
-            c = reader.read();
-        }
-/*
         CompileReader reader = new CompileReader(args[0]);
         Lexer.setReader(reader);
         SyntaxParser parser = SyntaxParser.getParser();
@@ -56,7 +48,6 @@ public class Compiler {
             if (writer != null)
                 writer.close();
         }
-*/
     }
 
 }

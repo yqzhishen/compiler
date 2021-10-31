@@ -55,6 +55,7 @@ public class SemanticAnalyzer {
                     else {
                         dumpConstExpr((Expr) expr);
                         constant.getIdent().setTag(expr.getTag());
+                        this.table.put(constant);
                     }
                 }
             }
