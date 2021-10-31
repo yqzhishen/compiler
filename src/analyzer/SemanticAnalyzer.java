@@ -39,7 +39,7 @@ public class SemanticAnalyzer {
                     Const constant = (Const) symbol;
                     IExpr expr = constant.getExpr();
                     if (expr instanceof Number number) {
-                        this.joiner.add("%" + this.tag + " = i32 " + number.getValue());
+                        this.joiner.add("%" + this.tag + " = add i32 0, " + number.getValue());
                         constant.getIdent().setTag(this.tag++);
                         this.table.put(constant);
                     }
@@ -191,26 +191,23 @@ public class SemanticAnalyzer {
 
     public void dumpConstExpr(Expr expr) throws SemanticError {
         IExpr[] elements = expr.getElements();
-        for (IExpr element : elements) {
-            if (element instanceof FuncCall funcCall)
+        String[] labels = new String[2];
+        for (int i = 0; i < 2; ++i) {
+            IExpr element = elements[i];
+            if (element instanceof Number number)
+                labels[i] = String.valueOf(number.getValue());
+            else if (element instanceof Ident ident) {
+                Const constant = (Const) this.table.get(ident, SymbolType.Const);
+                labels[i] = "%" + constant.getIdent().getTag();
+            }
+            else if (element instanceof FuncCall funcCall)
                 throw new SemanticError(funcCall.getIdent().getPos(), "not a constant value");
-            if (element instanceof Expr subExpr)
+            else if (element instanceof Expr subExpr) {
                 dumpConstExpr(subExpr);
+                labels[i] = "%" + subExpr.getTag();
+            }
         }
-        String leftTag = null, rightTag = null;
-        if (elements[0] instanceof Number number)
-            leftTag = String.valueOf(number.getValue());
-        else if (elements[0] instanceof Ident ident) {
-            Const constant = (Const) this.table.get(ident, SymbolType.Const);
-            leftTag = "%" + constant.getIdent().getTag();
-        }
-        if (elements[1] instanceof Number number)
-            rightTag = String.valueOf(number.getValue());
-        else if (elements[1] instanceof Ident ident) {
-            Const constant = (Const) this.table.get(ident, SymbolType.Const);
-            rightTag = "%" + constant.getIdent().getTag();
-        }
-        this.joiner.add(String.format("%%%d = %s i32 %s, %s", this.tag, dumpOp(expr.getOperator()), leftTag, rightTag));
+        this.joiner.add(String.format("%%%d = %s i32 %s, %s", this.tag, dumpOp(expr.getOperator()), labels[0], labels[1]));
         expr.setTag(this.tag++);
     }
 
