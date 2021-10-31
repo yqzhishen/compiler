@@ -38,25 +38,8 @@ public class SemanticAnalyzer {
                 for (Symbol symbol : symbols) {
                     Const constant = (Const) symbol;
                     IExpr expr = constant.getExpr();
-                    if (expr instanceof Number number) {
-                        this.joiner.add("%" + this.tag + " = add i32 0, " + number.getValue());
-                        constant.getIdent().setTag(this.tag++);
-                        this.table.put(constant);
-                    }
-                    else if (expr instanceof Ident ident) {
-                        Const rConst = (Const) this.table.get(ident, SymbolType.Const);
-                        this.joiner.add("%" + this.tag + " = i32 " + "%" + rConst.getIdent().getTag());
-                        constant.getIdent().setTag(this.tag++);
-                        this.table.put(constant);
-                    }
-                    else if (expr instanceof FuncCall) {
-                        throw new SemanticError(constant.getIdent().getPos(), "not a constant value");
-                    }
-                    else {
-                        dumpConstExpr((Expr) expr);
-                        constant.getIdent().setTag(expr.getTag());
-                        this.table.put(constant);
-                    }
+                    constant.setValue(calConstExpr(expr));
+                    this.table.put(constant);
                 }
             }
             else if (sentence instanceof VarDecl decl) {
@@ -83,7 +66,7 @@ public class SemanticAnalyzer {
                 else if (expr instanceof Ident ident) {
                     Symbol symbol = this.table.get(ident, SymbolType.Variable);
                     if (symbol instanceof Const rConst)
-                        this.joiner.add("ret i32 %" + rConst.getIdent().getTag());
+                        this.joiner.add("ret i32 " + rConst.getValue());
                     else if (symbol instanceof Variable rVar) {
                         this.joiner.add("%" + this.tag + " = load i32, i32* %" + rVar.getIdent().getTag());
                         this.joiner.add("ret i32 %" + this.tag);
@@ -125,7 +108,7 @@ public class SemanticAnalyzer {
             Symbol symbol = this.table.get(ident, SymbolType.Variable);
             if (leftVal != null) {
                 if (symbol instanceof Const rConst)
-                    this.joiner.add("store i32 %" + rConst.getIdent().getTag() + ", i32* %" + leftTag);
+                    this.joiner.add("store i32 " + rConst.getValue() + ", i32* %" + leftTag);
                 else if (symbol instanceof Variable rVar) {
                     this.joiner.add("%" + this.tag + " = load i32, i32* %" + rVar.getIdent().getTag());
                     this.joiner.add("store i32 %" + this.tag + ", i32* %" + leftTag);
@@ -162,7 +145,7 @@ public class SemanticAnalyzer {
             else if (param instanceof Ident ident) {
                 Symbol pSymbol = this.table.get(ident, SymbolType.Variable);
                 if (pSymbol instanceof Const pConst)
-                    callJoiner.add("i32 %" + pConst.getIdent().getTag());
+                    callJoiner.add("i32 " + pConst.getValue());
                 else if (pSymbol instanceof Variable pVar) {
                     this.joiner.add("%" + this.tag + " = load i32, i32* %" + pVar.getIdent().getTag());
                     callJoiner.add("i32 %" + this.tag);
@@ -189,26 +172,32 @@ public class SemanticAnalyzer {
         }
     }
 
-    public void dumpConstExpr(Expr expr) throws SemanticError {
-        IExpr[] elements = expr.getElements();
-        String[] labels = new String[2];
-        for (int i = 0; i < 2; ++i) {
-            IExpr element = elements[i];
-            if (element instanceof Number number)
-                labels[i] = String.valueOf(number.getValue());
-            else if (element instanceof Ident ident) {
-                Const constant = (Const) this.table.get(ident, SymbolType.Const);
-                labels[i] = "%" + constant.getIdent().getTag();
-            }
-            else if (element instanceof FuncCall funcCall)
-                throw new SemanticError(funcCall.getIdent().getPos(), "not a constant value");
-            else if (element instanceof Expr subExpr) {
-                dumpConstExpr(subExpr);
-                labels[i] = "%" + subExpr.getTag();
-            }
+    public int calConstExpr(IExpr expr) throws SemanticError {
+        if (expr instanceof Number number)
+            return number.getValue();
+        else if (expr instanceof Ident ident) {
+            Const constant = (Const) this.table.get(ident, SymbolType.Const);
+            return constant.getValue();
         }
-        this.joiner.add(String.format("%%%d = %s i32 %s, %s", this.tag, dumpOp(expr.getOperator()), labels[0], labels[1]));
-        expr.setTag(this.tag++);
+        else if (expr instanceof FuncCall call) {
+            throw new SemanticError(call.getIdent().getPos(), "not a constant value");
+        }
+        else if (expr instanceof Expr subExpr) {
+            IExpr[] elements = subExpr.getElements();
+            int[] values = new int[] {
+                    calConstExpr(elements[0]),
+                    calConstExpr(elements[1])
+            };
+            return switch (subExpr.getOperator()) {
+                case Plus -> values[0] + values[1];
+                case Sub -> values[0] - values[1];
+                case Mul -> values[0] * values[1];
+                case Div -> values[0] / values[1];
+                case Mod -> values[0] % values[1];
+                default -> 0; // This shall never happen
+            };
+        }
+        return 0; // This shall never happen
     }
 
     public void dumpVarExpr(Expr expr) throws SemanticError {
@@ -221,7 +210,7 @@ public class SemanticAnalyzer {
             else if (subExpr instanceof Ident ident) {
                 Symbol symbol = this.table.get(ident, SymbolType.Variable);
                 if (symbol instanceof Const constant)
-                    labels[i] = "%" + constant.getIdent().getTag();
+                    labels[i] = String.valueOf(constant.getValue());
                 else if (symbol instanceof Variable variable) {
                     this.joiner.add("%" + this.tag + " = load i32, i32* %" + variable.getIdent().getTag());
                     labels[i] = "%" + this.tag;

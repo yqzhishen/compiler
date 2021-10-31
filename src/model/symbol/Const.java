@@ -5,11 +5,26 @@ import model.unit.IExpr;
 
 public class Const extends Symbol {
 
-    private final IExpr expr;
+    private IExpr expr;
+
+    private int value;
 
     public Const(Ident ident, IExpr expr) {
         super(ident);
         this.expr = expr;
+    }
+
+    public Const(Ident ident, int value) {
+        super(ident);
+        this.value = value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return this.value;
     }
 
     public IExpr getExpr() {

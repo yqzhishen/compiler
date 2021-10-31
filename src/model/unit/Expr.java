@@ -51,18 +51,7 @@ public class Expr extends AbstractUnit implements IExpr {
 
     @Override
     public Integer calculate() {
-        int[] values = new int[] {
-                this.elements[0].calculate(),
-                this.elements[1].calculate()
-        };
-        return switch (this.operator) {
-            case Plus -> values[0] + values[1];
-            case Sub -> values[0] - values[1];
-            case Mul -> values[0] * values[1];
-            case Div -> values[0] / values[1];
-            case Mod -> values[0] % values[1];
-            default -> 0;
-        };
+        return null;
     }
 
 }
