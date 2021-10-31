@@ -4,12 +4,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PushbackReader;
+import java.util.Stack;
 
 public class CompileReader {
 
     private final FileReader fileReader;
 
     private final PushbackReader pushbackReader;
+
+    private final Stack<Integer> stack = new Stack<>();
 
     private final FilePosition pos = new FilePosition();
 
@@ -26,11 +29,15 @@ public class CompileReader {
 
     public int read() throws IOException {
         int c =  this.pushbackReader.read();
-        if (c == '\n')
-            this.pos.nextLine();
+        if (c == '\n') {
+            ++this.pos.line;
+            this.stack.push(this.pos.column);
+            this.pos.column = 0;
+        }
         else {
-            if (!this.end)
-                this.pos.nextColumn();
+            if (!this.end) {
+                ++this.pos.column;
+            }
             if (c == -1)
                 this.end = true;
         }
@@ -39,10 +46,13 @@ public class CompileReader {
 
     public void unread(int c) throws IOException {
         this.pushbackReader.unread(c);
-        if (c == '\n')
-            this.pos.prevLine();
-        else
-            this.pos.prevColumn();
+        if (c == '\n') {
+            --this.pos.line;
+            this.pos.column = this.stack.pop();
+        }
+        else {
+            --this.pos.column;
+        }
     }
 
     public void close() throws IOException {

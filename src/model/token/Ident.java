@@ -1,6 +1,8 @@
 package model.token;
 
-public class Ident extends Token {
+import model.unit.IExpr;
+
+public class Ident extends Token implements IExpr {
 
     private final String name;
 
@@ -21,6 +23,11 @@ public class Ident extends Token {
     @Override
     public String dump() {
         return this.name;
+    }
+
+    @Override
+    public Integer calculate() {
+        return null;
     }
 
 }

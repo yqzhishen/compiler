@@ -19,7 +19,7 @@ public class Block extends AbstractUnit {
     public Block build() throws IOException, CompileError {
         this.require(TokenType.LBrace);
         while (!Lexer.getLexer().nextType().equals(TokenType.RBrace)) {
-            this.sentences.add(new Return().build());
+            this.sentences.add(new Sentence().build());
         }
         this.require(TokenType.RBrace);
         return this;

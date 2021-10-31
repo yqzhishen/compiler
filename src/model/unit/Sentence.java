@@ -16,32 +16,17 @@ public class Sentence extends AbstractUnit {
             case Plus, Sub, LPar, Number, Ident -> {
                 return new Stmt().build();
             }
-            case Const -> {
-                return new ConstDecl().build();
+            case Const, Int -> {
+                return new Declare().build();
             }
-/*
-            case Int -> {
-                return new ConstDecl().build();
-            }
-*/
             case Return -> {
                 return new Return().build();
             }
         }
-        throw new SyntaxError(
-                Lexer.getReader().getPos(),
-                new TokenType[] {
-                        TokenType.Plus,
-                        TokenType.Sub,
-                        TokenType.LPar,
-                        TokenType.Number,
-                        TokenType.Ident,
-                        TokenType.Const,
-                        TokenType.Int,
-                        TokenType.Return
-                },
-                type
-        );
+        // Just for throwing an exception
+        this.require(TokenType.Plus, TokenType.Sub, TokenType.LPar, TokenType.Number,
+                TokenType.Ident, TokenType.Const, TokenType.Int, TokenType.Return);
+        return null; // This shall never happen
     }
 
     @Override

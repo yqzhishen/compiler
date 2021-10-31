@@ -18,11 +18,19 @@ public class Declare extends Sentence {
 
     @Override
     public Declare build() throws IOException, CompileError {
-        return switch (this.require(TokenType.Const, TokenType.Int).getType()) {
-            case Const -> new ConstDecl().build();
-            case Int -> new VarDecl().build();
-            default -> null;
-        };
+        switch (this.lexer.nextType()) {
+            case Const -> {
+                return new ConstDecl().build();
+            }
+            case Int -> {
+                return new VarDecl().build();
+            }
+            default -> {
+                // Just for throwing an exception
+                this.require(TokenType.Const, TokenType.Int);
+                return null; // This shall never happen
+            }
+        }
     }
 
     @Override

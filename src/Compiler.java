@@ -1,3 +1,4 @@
+import analyzer.SemanticAnalyzer;
 import error.CompileError;
 import lexer.Lexer;
 import model.unit.CompUnit;
@@ -19,9 +20,11 @@ public class Compiler {
             if (Lexer.getLexer().getToken() != null)
                 System.exit(1);
             writer = new FileWriter(args[1]);
-            // writer.write(SemanticAnalyzer.getAnalyzer().dump(compUnit));
-            // writer.write(compUnit.dump());
+/*
+            writer.write(SemanticAnalyzer.getAnalyzer().dump(compUnit));
+            writer.write(compUnit.dump());
             writer.flush();
+*/
         }
         catch (CompileError error) {
             System.err.println("----- Compile Error -----");
