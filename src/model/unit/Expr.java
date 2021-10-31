@@ -11,7 +11,7 @@ public class Expr extends AbstractUnit implements IExpr {
 
     protected TokenType operator;
 
-    protected int count;
+    protected Integer tag;
 
     public Expr() { }
 
@@ -39,12 +39,14 @@ public class Expr extends AbstractUnit implements IExpr {
         return String.valueOf(this.calculate());
     }
 
-    public int getCount() {
-        return count;
+    @Override
+    public Integer getTag() {
+        return tag;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    @Override
+    public void setTag(int tag) {
+        this.tag = tag;
     }
 
     @Override

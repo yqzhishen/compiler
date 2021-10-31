@@ -24,7 +24,7 @@ public class LexicalError extends CompileError {
         if (this.got == -1) {
             return "Lexical error at " + this.pos + ": unexpected end of file";
         }
-        return "Lexical error at " + this.pos + ": illegal character " + "'" + (char) this.got + "'";
+        return "Lexical error at " + this.pos + ": illegal character '" + (char) this.got + "'";
     }
 
 }

@@ -1,6 +1,9 @@
 import analyzer.SemanticAnalyzer;
+import analyzer.SymTable;
 import error.CompileError;
 import lexer.Lexer;
+import model.symbol.Function;
+import model.token.Ident;
 import model.unit.CompUnit;
 import parser.SyntaxParser;
 import reader.CompileReader;
@@ -16,15 +19,24 @@ public class Compiler {
         SyntaxParser parser = SyntaxParser.getParser();
         FileWriter writer = null;
         try {
+            SymTable table = SymTable.getSymTable();
+            table.put(new Function(new Ident("getint"), 0, false));
+            table.put(new Function(new Ident("putint"), 1, true));
+            table.put(new Function(new Ident("getch"), 0, false));
+            table.put(new Function(new Ident("putch"), 1, true));
             CompUnit compUnit = parser.parse();
             if (Lexer.getLexer().getToken() != null)
                 System.exit(1);
             writer = new FileWriter(args[1]);
-/*
+            writer.write("""
+                            declare i32 @getint()
+                            declare void @putint(i32)
+                            declare i32 @getch()
+                            declare void @putch(i32)
+                            """);
             writer.write(SemanticAnalyzer.getAnalyzer().dump(compUnit));
-            writer.write(compUnit.dump());
+            // writer.write(compUnit.dump());
             writer.flush();
-*/
         }
         catch (CompileError error) {
             System.err.println("----- Compile Error -----");
