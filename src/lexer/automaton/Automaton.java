@@ -35,6 +35,11 @@ public class Automaton {
                         case '%' -> 21;
                         case '=' -> 22;
                         case ',' -> 24;
+                        case '<' -> 25;
+                        case '>' -> 27;
+                        case '!' -> 29;
+                        case '&' -> 31;
+                        case '|' -> 33;
                         default -> -1;
                     };
                 }
@@ -215,11 +220,31 @@ public class Automaton {
             // 21
             new SimpleState(TokenType.Mod),
             // 22
-            new SimpleState('=', 23, TokenType.Assign),
+            new SimpleState(TokenType.Assign, '=', 23),
             // 23
-            new SimpleState(TokenType.Equal),
+            new SimpleState(TokenType.Eq),
             // 24
             new SimpleState(TokenType.Comma),
+            // 25
+            new SimpleState(TokenType.Lt, '=', 26),
+            // 26
+            new SimpleState(TokenType.Lte),
+            // 27
+            new SimpleState(TokenType.Gt, '=', 28),
+            // 28
+            new SimpleState(TokenType.Gte),
+            // 29
+            new SimpleState(TokenType.Not, '=', 30),
+            // 30
+            new SimpleState(TokenType.Neq),
+            // 31
+            new SimpleState(null, '&', 32),
+            // 32
+            new SimpleState(TokenType.And),
+            // 33
+            new SimpleState(null, '|', 34),
+            // 34
+            new SimpleState(TokenType.Or)
     };
 
     private int current = 0;

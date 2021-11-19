@@ -10,7 +10,7 @@ public class SimpleState implements IState {
 
     private final TokenType type;
 
-    public SimpleState(char condition, int transfer, TokenType type) {
+    public SimpleState(TokenType type, char condition, int transfer) {
         this.condition = condition;
         this.transfer = transfer;
         this.type = type;

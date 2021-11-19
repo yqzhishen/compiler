@@ -11,13 +11,11 @@ public class Term extends Expr {
 
     @Override
     public IExpr build() throws CompileError, IOException {
-        boolean positive = true;
-        TokenType nextType = this.lexer.nextType();
-        while (TokenType.Plus.equals(nextType) || TokenType.Sub.equals(nextType)) {
-            this.lexer.getToken();
-            if (nextType.equals(TokenType.Sub))
-                positive = !positive;
-            nextType = this.lexer.nextType();
+        if (inverted()) {
+            return new NotCond(new Term().build());
+        }
+        if (!positive()) {
+            return new Expr(new Number(0), TokenType.Sub, new Term().build());
         }
         IExpr expr;
         switch (this.lexer.nextType()) {
@@ -39,7 +37,30 @@ public class Term extends Expr {
                 return null; // This shall never happen
             }
         }
-        return positive ? expr : new Expr(new Number(0), TokenType.Sub, expr);
+        return expr;
+    }
+
+    private boolean inverted() throws CompileError, IOException {
+        boolean inverted = false;
+        TokenType nextType = this.lexer.nextType();
+        while (TokenType.Not.equals(nextType)) {
+            this.lexer.getToken();
+            inverted = !inverted;
+            nextType = this.lexer.nextType();
+        }
+        return inverted;
+    }
+
+    private boolean positive() throws CompileError, IOException {
+        boolean positive = true;
+        TokenType nextType = this.lexer.nextType();
+        while (TokenType.Plus.equals(nextType) || TokenType.Sub.equals(nextType)) {
+            this.lexer.getToken();
+            if (nextType.equals(TokenType.Sub))
+                positive = !positive;
+            nextType = this.lexer.nextType();
+        }
+        return positive;
     }
 
 }

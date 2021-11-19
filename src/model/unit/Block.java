@@ -9,7 +9,16 @@ import java.util.ArrayList;
 
 public class Block extends AbstractUnit {
 
-    private final ArrayList<Sentence> sentences = new ArrayList<>();
+    public Block() {
+        this.sentences = new ArrayList<>();
+    }
+
+    public Block(Sentence singleSentence) {
+        this.sentences = new ArrayList<>(1);
+        this.sentences.add(singleSentence);
+    }
+
+    private final ArrayList<Sentence> sentences;
 
     public ArrayList<Sentence> getSentences() {
         return this.sentences;
