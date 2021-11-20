@@ -28,16 +28,13 @@ public class Compiler {
             if (Lexer.getLexer().getToken() != null)
                 System.exit(1);
             writer = new FileWriter(args[1]);
-/*
             writer.write("""
                             declare i32 @getint()
                             declare void @putint(i32)
                             declare i32 @getch()
                             declare void @putch(i32)
                             """);
-*/
             writer.write(SemanticAnalyzer.getAnalyzer().generateIr(compUnit));
-            // writer.write(compUnit.dump());
             writer.flush();
         }
         catch (CompileError error) {
