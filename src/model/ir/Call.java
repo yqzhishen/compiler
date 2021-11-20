@@ -32,8 +32,8 @@ public class Call extends Instruction {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         if (this.output != null)
-            builder.append(output).append(" = call ").append(resultType).append(" ");
-        builder.append("@").append(functionName);
+            builder.append(output).append(" = ");
+        builder.append("call ").append(resultType).append(" @").append(functionName);
         StringJoiner joiner = new StringJoiner(", ", "(", ")");
         for (Param param : params) {
             joiner.add(param.paramType + " " + param.operand);
