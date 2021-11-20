@@ -1,17 +1,22 @@
 package model.unit;
 
+import analyzer.SymTable;
 import error.CompileError;
+import model.ir.Instruction;
 import model.token.TokenType;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Sentence extends AbstractUnit {
+
+    protected SymTable table = SymTable.getSymTable();
 
     @Override
     public Sentence build() throws IOException, CompileError {
         TokenType type = this.lexer.nextType();
         switch (type) {
-            case Plus, Sub, LPar, Number, Ident -> {
+            case Add, Sub, LPar, Number, Ident -> {
                 return new Stmt().build();
             }
             case Const, Int -> {
@@ -25,13 +30,12 @@ public class Sentence extends AbstractUnit {
             }
         }
         // Just for throwing an exception
-        this.require(TokenType.Plus, TokenType.Sub, TokenType.LPar, TokenType.Number,
+        this.require(TokenType.Add, TokenType.Sub, TokenType.LPar, TokenType.Number,
                 TokenType.Ident, TokenType.Const, TokenType.Int, TokenType.If, TokenType.Return);
         return null; // This shall never happen
     }
 
-    @Override
-    public String dump() {
+    public List<Instruction> dump() throws CompileError {
         return null;
     }
 

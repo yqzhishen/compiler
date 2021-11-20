@@ -1,6 +1,8 @@
 package analyzer;
 
+import error.CompileError;
 import error.SemanticError;
+import model.ir.Instruction;
 import model.symbol.*;
 import model.token.Ident;
 import model.token.Number;
@@ -25,6 +27,18 @@ public class SemanticAnalyzer {
     private final StringJoiner joiner = new StringJoiner("\n    ", "\n    ", "\n");
 
     private SemanticAnalyzer() { }
+
+    public String generateIr(CompUnit unit) throws CompileError {
+        StringBuilder builder = new StringBuilder("define dso_local i32 @main() {");
+        StringJoiner joiner = new StringJoiner("\n    ", "\n    ", "\n");
+        List<Instruction> instructions = unit
+                .getFuncDefs().get(0)
+                .getFuncBlock()
+                .dump();
+        instructions.forEach(instruction -> joiner.add(instruction.toString()));
+        builder.append(joiner).append("}\n");
+        return builder.toString();
+    }
 
     public String dump(CompUnit unit) throws SemanticError {
         StringBuilder builder = new StringBuilder("define dso_local i32 @main() {");
@@ -189,7 +203,7 @@ public class SemanticAnalyzer {
                     calConstExpr(elements[1])
             };
             return switch (subExpr.getOperator()) {
-                case Plus -> values[0] + values[1];
+                case Add -> values[0] + values[1];
                 case Sub -> values[0] - values[1];
                 case Mul -> values[0] * values[1];
                 case Div -> values[0] / values[1];
@@ -236,7 +250,7 @@ public class SemanticAnalyzer {
 
     private String dumpOp(TokenType op) {
         return switch (op) {
-            case Plus -> "add";
+            case Add -> "add";
             case Sub -> "sub";
             case Mul -> "mul";
             case Div -> "sdiv";

@@ -1,9 +1,11 @@
 package model.unit;
 
 import error.CompileError;
+import model.ir.Instruction;
 import model.token.TokenType;
 
 import java.io.IOException;
+import java.util.List;
 
 public class FuncDef extends AbstractUnit {
 
@@ -25,11 +27,6 @@ public class FuncDef extends AbstractUnit {
         this.require(TokenType.RPar);
         this.funcBlock = new Block().build();
         return this;
-    }
-
-    @Override
-    public String dump() {
-        return "define dso_local i32 @main() " + this.funcBlock.dump();
     }
 
 }

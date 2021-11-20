@@ -1,9 +1,11 @@
 package model.unit;
 
 import error.CompileError;
+import model.ir.Instruction;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CompUnit extends AbstractUnit {
 
@@ -17,11 +19,6 @@ public class CompUnit extends AbstractUnit {
     public CompUnit build() throws IOException, CompileError {
         this.funcDefs.add(new FuncDef().build());
         return this;
-    }
-
-    @Override
-    public String dump() {
-        return this.funcDefs.get(0).dump() + '\n';
     }
 
 }

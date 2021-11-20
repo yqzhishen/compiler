@@ -25,11 +25,6 @@ public class Number extends Token implements IExpr {
     }
 
     @Override
-    public String dump() {
-        return "i32 " + this.value;
-    }
-
-    @Override
     public Integer calculate() {
         return this.value;
     }

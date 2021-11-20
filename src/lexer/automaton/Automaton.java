@@ -212,7 +212,7 @@ public class Automaton {
             // 17
             new SimpleState(TokenType.Semicolon),
             // 18
-            new SimpleState(TokenType.Plus),
+            new SimpleState(TokenType.Add),
             // 19
             new SimpleState(TokenType.Sub),
             // 20

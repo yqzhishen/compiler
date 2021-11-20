@@ -1,9 +1,17 @@
 package model.unit;
 
+import analyzer.SymTable;
+import analyzer.Tagger;
 import error.CompileError;
+import model.ir.Instruction;
+import model.ir.Operand;
+import model.ir.Operate;
+import model.ir.Operate.OpType;
 import model.token.TokenType;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cond extends AbstractUnit implements IExpr {
 
@@ -12,6 +20,14 @@ public class Cond extends AbstractUnit implements IExpr {
     protected TokenType operator;
 
     protected Integer tag;
+
+    protected Operand result;
+
+    protected SymTable table = SymTable.getSymTable();
+
+    public Operand getResult() {
+        return result;
+    }
 
     public Cond() { }
 
@@ -26,9 +42,24 @@ public class Cond extends AbstractUnit implements IExpr {
         return new OrCond().build();
     }
 
-    @Override
-    public String dump() {
-        return null;
+    public List<Instruction> dump() throws CompileError {
+        List<Instruction> instructions = new ArrayList<>();
+        Operand[] operands = new Operand[2];
+        for (int i = 0; i < 2; ++i) {
+            Cond subCond = (Cond) elements[i];
+            instructions.addAll(subCond.dump());
+            operands[i] = subCond.getResult();
+        }
+        OpType op = switch (operator) {
+            case And -> OpType.And;
+            case Or -> OpType.Or;
+            default -> null;
+        };
+        Operand result = new Operand(true, Tagger.newTag());
+        Operate operate = new Operate("i1", result, op, operands[0], operands[1]);
+        this.result = result;
+        instructions.add(operate);
+        return instructions;
     }
 
     @Override

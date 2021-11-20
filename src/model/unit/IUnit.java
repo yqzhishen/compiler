@@ -12,6 +12,4 @@ public interface IUnit {
         return null;
     }
 
-    String dump();
-
 }

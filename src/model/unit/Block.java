@@ -2,10 +2,12 @@ package model.unit;
 
 import error.CompileError;
 import lexer.Lexer;
+import model.ir.Instruction;
 import model.token.TokenType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Block extends AbstractUnit {
 
@@ -18,9 +20,9 @@ public class Block extends AbstractUnit {
         this.sentences.add(singleSentence);
     }
 
-    private final ArrayList<Sentence> sentences;
+    private final List<Sentence> sentences;
 
-    public ArrayList<Sentence> getSentences() {
+    public List<Sentence> getSentences() {
         return this.sentences;
     }
 
@@ -34,9 +36,12 @@ public class Block extends AbstractUnit {
         return this;
     }
 
-    @Override
-    public String dump() {
-        return "{\n    " + this.sentences.get(0).dump() + "\n}";
+    public List<Instruction> dump() throws CompileError {
+        List<Instruction> instructions = new ArrayList<>();
+        for (Sentence sentence : sentences) {
+            instructions.addAll(sentence.dump());
+        }
+        return instructions;
     }
 
 }

@@ -23,11 +23,6 @@ public class Ident extends Token implements IExpr {
     }
 
     @Override
-    public String dump() {
-        return this.name;
-    }
-
-    @Override
     public Integer calculate() {
         return null;
     }

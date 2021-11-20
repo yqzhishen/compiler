@@ -9,10 +9,18 @@ import java.io.IOException;
 
 public class Term extends Expr {
 
+    private boolean bool;
+
+    public Term() { }
+
+    public Term(boolean bool) {
+        this.bool = bool;
+    }
+
     @Override
     public IExpr build() throws CompileError, IOException {
         if (inverted()) {
-            return new NotCond(new Term().build());
+            return new NotCond(new Term(true).build());
         }
         if (!positive()) {
             return new Expr(new Number(0), TokenType.Sub, new Term().build());
@@ -28,12 +36,12 @@ public class Term extends Expr {
             }
             case LPar -> {
                 this.lexer.getToken();
-                expr = new Expr().build();
+                expr = bool ? new Cond().build() : new Expr().build();
                 this.require(TokenType.RPar);
             }
             default -> {
                 // Just for throwing an exception
-                this.require(TokenType.Plus, TokenType.Sub, TokenType.Number, TokenType.Ident, TokenType.LPar);
+                this.require(TokenType.Add, TokenType.Sub, TokenType.Number, TokenType.Ident, TokenType.LPar);
                 return null; // This shall never happen
             }
         }
@@ -54,7 +62,7 @@ public class Term extends Expr {
     private boolean positive() throws CompileError, IOException {
         boolean positive = true;
         TokenType nextType = this.lexer.nextType();
-        while (TokenType.Plus.equals(nextType) || TokenType.Sub.equals(nextType)) {
+        while (TokenType.Add.equals(nextType) || TokenType.Sub.equals(nextType)) {
             this.lexer.getToken();
             if (nextType.equals(TokenType.Sub))
                 positive = !positive;

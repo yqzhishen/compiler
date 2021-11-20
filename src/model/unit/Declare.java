@@ -1,6 +1,8 @@
 package model.unit;
 
 import error.CompileError;
+import error.SemanticError;
+import model.ir.Instruction;
 import model.symbol.Symbol;
 import model.token.TokenType;
 
@@ -34,7 +36,7 @@ public class Declare extends Sentence {
     }
 
     @Override
-    public String dump() {
+    public List<Instruction> dump() throws CompileError {
         return null;
     }
 
