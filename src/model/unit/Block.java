@@ -22,18 +22,36 @@ public class Block extends AbstractUnit {
 
     private final List<Sentence> sentences;
 
-    public List<Sentence> getSentences() {
-        return this.sentences;
-    }
-
     @Override
     public Block build() throws IOException, CompileError {
         this.require(TokenType.LBrace);
         while (!Lexer.getLexer().nextType().equals(TokenType.RBrace)) {
-            this.sentences.add(new Sentence().build());
+            this.sentences.add(buildSentence());
         }
         this.require(TokenType.RBrace);
         return this;
+    }
+
+    public Sentence buildSentence() throws IOException, CompileError {
+        TokenType type = this.lexer.nextType();
+        switch (type) {
+            case Add, Sub, LPar, Number, Ident -> {
+                return new Stmt().build();
+            }
+            case Const, Int -> {
+                return new Declare().build();
+            }
+            case If -> {
+                return new IfClause().build();
+            }
+            case Return -> {
+                return new Return().build();
+            }
+        }
+        // Just for throwing an exception
+        this.require(TokenType.Add, TokenType.Sub, TokenType.LPar, TokenType.Number,
+                TokenType.Ident, TokenType.Const, TokenType.Int, TokenType.If, TokenType.Return);
+        return null;
     }
 
     public List<Instruction> dump() throws CompileError {

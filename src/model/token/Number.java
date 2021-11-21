@@ -4,7 +4,7 @@ import model.unit.IExpr;
 
 public class Number extends Token implements IExpr {
 
-    private int value;
+    private final int value;
 
     public Number(int value) {
         super(TokenType.Number);
@@ -13,10 +13,6 @@ public class Number extends Token implements IExpr {
 
     public int getValue() {
         return this.value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
     }
 
     @Override

@@ -24,10 +24,6 @@ public class FuncCall extends Expr implements IExpr {
         return this.ident;
     }
 
-    public List<IExpr> getParams() {
-        return this.params;
-    }
-
     @Override
     public IExpr build() throws IOException, CompileError {
         this.ident = (Ident) this.require(TokenType.Ident);

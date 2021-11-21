@@ -84,7 +84,9 @@ public class IfClause extends Sentence {
             return new Block().build();
         }
         else {
-            return new Block(new Sentence().build());
+            Block block = new Block(null);
+            Sentence sentence = block.buildSentence();
+            return new Block(sentence);
         }
     }
 

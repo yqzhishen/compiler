@@ -6,8 +6,6 @@ public class Ident extends Token implements IExpr {
 
     private final String name;
 
-    private Integer tag;
-
     public Ident(String name) {
         super(TokenType.Ident);
         this.name = name;
@@ -27,13 +25,4 @@ public class Ident extends Token implements IExpr {
         return null;
     }
 
-    @Override
-    public void setTag(int tag) {
-        this.tag = tag;
-    }
-
-    @Override
-    public Integer getTag() {
-        return this.tag;
-    }
 }

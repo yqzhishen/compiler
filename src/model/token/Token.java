@@ -62,8 +62,8 @@ public class Token implements IUnit {
     }
 
     @Override
-    public boolean isTerminator() {
-        return true;
+    public Token build() {
+        return this;
     }
 
 }

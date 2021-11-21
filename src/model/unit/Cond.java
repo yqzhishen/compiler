@@ -19,8 +19,6 @@ public class Cond extends AbstractUnit implements IExpr {
 
     protected TokenType operator;
 
-    protected Integer tag;
-
     protected Operand result;
 
     protected SymTable table = SymTable.getSymTable();
@@ -67,13 +65,4 @@ public class Cond extends AbstractUnit implements IExpr {
         return null;
     }
 
-    @Override
-    public void setTag(int tag) {
-        this.tag = tag;
-    }
-
-    @Override
-    public Integer getTag() {
-        return tag;
-    }
 }

@@ -21,8 +21,6 @@ public class Expr extends AbstractUnit implements IExpr {
 
     protected TokenType operator;
 
-    protected Integer tag;
-
     protected Operand result;
 
     protected SymTable table = SymTable.getSymTable();
@@ -33,14 +31,6 @@ public class Expr extends AbstractUnit implements IExpr {
         this.elements[0] = leftExpr;
         this.operator = operator;
         this.elements[1] = rightExpr;
-    }
-
-    public IExpr[] getElements() {
-        return this.elements;
-    }
-
-    public TokenType getOperator() {
-        return this.operator;
     }
 
     public Operand getResult() {
@@ -99,16 +89,6 @@ public class Expr extends AbstractUnit implements IExpr {
         this.result = result;
         instructions.add(operate);
         return instructions;
-    }
-
-    @Override
-    public Integer getTag() {
-        return tag;
-    }
-
-    @Override
-    public void setTag(int tag) {
-        this.tag = tag;
     }
 
     @Override
