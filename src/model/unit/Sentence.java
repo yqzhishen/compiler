@@ -15,18 +15,20 @@ public class Sentence extends AbstractUnit {
     @Override
     public Sentence build() throws IOException, CompileError {
         TokenType type = this.lexer.nextType();
-        switch (type) {
-            case Add, Sub, LPar, Number, Ident -> {
-                return new Stmt().build();
-            }
-            case Const, Int -> {
-                return new Declare().build();
-            }
-            case If -> {
-                return new IfClause().build();
-            }
-            case Return -> {
-                return new Return().build();
+        if (type != null) {
+            switch (type) {
+                case Add, Sub, LPar, Number, Ident -> {
+                    return new Stmt().build();
+                }
+                case Const, Int -> {
+                    return new Declare().build();
+                }
+                case If -> {
+                    return new IfClause().build();
+                }
+                case Return -> {
+                    return new Return().build();
+                }
             }
         }
         // Just for throwing an exception

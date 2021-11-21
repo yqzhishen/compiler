@@ -25,7 +25,7 @@ public class Block extends AbstractUnit {
     @Override
     public Block build() throws IOException, CompileError {
         this.require(TokenType.LBrace);
-        while (!Lexer.getLexer().nextType().equals(TokenType.RBrace)) {
+        while (!TokenType.RBrace.equals(Lexer.getLexer().nextType())) {
             this.sentences.add(new Sentence().build());
         }
         this.require(TokenType.RBrace);
