@@ -69,7 +69,7 @@ public class Expr extends AbstractUnit implements IExpr {
                 operands[i] = expression.getResult();
             }
             else if (subExpr instanceof Cond condition) {
-                instructions.addAll(condition.dump());
+                instructions.addAll(condition.generateIr());
                 Operand extended = new Operand(true, Tagger.newTag());
                 Extend extend = new Extend("i32", extended, "i1", condition.getResult());
                 instructions.add(extend);

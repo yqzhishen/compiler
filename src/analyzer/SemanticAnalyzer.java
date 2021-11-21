@@ -17,13 +17,13 @@ public class SemanticAnalyzer {
 
     private SemanticAnalyzer() { }
 
-    public String generateIr(CompUnit unit) throws CompileError {
+    public String dump(CompUnit unit) throws CompileError {
         StringBuilder builder = new StringBuilder("define dso_local i32 @main() {");
         StringJoiner joiner = new StringJoiner("\n    ", "\n    ", "\n");
         List<Instruction> instructions = unit
                 .getFuncDefs().get(0)
                 .getFuncBlock()
-                .dump();
+                .generateIr();
         instructions.forEach(instruction -> joiner.add(instruction.toString()));
         builder.append(joiner).append("}\n");
         return builder.toString();

@@ -40,18 +40,18 @@ public class IfClause extends Sentence {
     }
 
     @Override
-    public List<Instruction> dump() throws CompileError {
-        List<Instruction> instructions = new ArrayList<>(condition.dump());
+    public List<Instruction> generateIr() throws CompileError {
+        List<Instruction> instructions = new ArrayList<>(condition.generateIr());
         int tagIfTrue = Tagger.newTag();
         Label labelIfTrue = new Label(tagIfTrue);
-        List<Instruction> instructionsIfTrue = ifBlock.dump();
+        List<Instruction> instructionsIfTrue = ifBlock.generateIr();
         int tagIfFalse = -1;
         Label labelIfFalse = null;
         List<Instruction> instructionsIfFalse = new ArrayList<>(0);
         if (elseBlock != null) {
             tagIfFalse = Tagger.newTag();
             labelIfFalse = new Label(tagIfFalse);
-            instructionsIfFalse = elseBlock.dump();
+            instructionsIfFalse = elseBlock.generateIr();
         }
         int tagPass = Tagger.newTag();
         Label labelPass = new Label(tagPass);
@@ -84,9 +84,7 @@ public class IfClause extends Sentence {
             return new Block().build();
         }
         else {
-            Block block = new Block(null);
-            Sentence sentence = block.buildSentence();
-            return new Block(sentence);
+            return new Block(new Sentence().build());
         }
     }
 

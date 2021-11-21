@@ -1,11 +1,9 @@
 package model.unit;
 
 import error.CompileError;
-import model.ir.Instruction;
 import model.token.TokenType;
 
 import java.io.IOException;
-import java.util.List;
 
 public class FuncDef extends AbstractUnit {
 

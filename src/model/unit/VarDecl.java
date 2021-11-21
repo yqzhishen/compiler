@@ -43,7 +43,7 @@ public class VarDecl extends Declare {
     }
 
     @Override
-    public List<Instruction> dump() throws CompileError {
+    public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
         for (Symbol symbol : this.symbols) {
             Variable variable = (Variable) symbol;

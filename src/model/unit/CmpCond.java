@@ -52,13 +52,13 @@ public class CmpCond extends Cond {
     }
 
     @Override
-    public List<Instruction> dump() throws CompileError {
+    public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
         Operand[] operands = new Operand[2];
         for (int i = 0; i < 2; ++i) {
             IExpr subExpr = elements[i];
             if (subExpr instanceof Cond condition) {
-                instructions.addAll(condition.dump());
+                instructions.addAll(condition.generateIr());
                 Operand extended = new Operand(true, Tagger.newTag());
                 Extend extend = new Extend("i32", extended, "i1", condition.getResult());
                 instructions.add(extend);

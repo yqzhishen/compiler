@@ -36,7 +36,7 @@ public class Return extends Sentence {
     }
 
     @Override
-    public List<Instruction> dump() throws CompileError {
+    public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>(2);
         if (expr instanceof Number number) {
             model.ir.Return ret = new model.ir.Return("i32", new Operand(false, number.getValue()));

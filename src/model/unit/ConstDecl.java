@@ -32,7 +32,7 @@ public class ConstDecl extends Declare {
     }
 
     @Override
-    public List<Instruction> dump() throws CompileError {
+    public List<Instruction> generateIr() throws CompileError {
         for (Symbol symbol : this.symbols) {
             Const constant = (Const) symbol;
             IExpr expr = constant.getExpr();

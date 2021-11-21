@@ -27,10 +27,10 @@ public class NotCond extends Cond {
     }
 
     @Override
-    public List<Instruction> dump() throws CompileError {
+    public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
         if (expr instanceof Cond condition) {
-            instructions.addAll(condition.dump());
+            instructions.addAll(condition.generateIr());
             Operand result = new Operand(true, Tagger.newTag());
             Operate operate = new Operate("i1", result, Operate.OpType.Xor,
                     condition.getResult(),

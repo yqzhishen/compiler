@@ -36,7 +36,7 @@ public class Declare extends Sentence {
     }
 
     @Override
-    public List<Instruction> dump() throws CompileError {
+    public List<Instruction> generateIr() throws CompileError {
         return null;
     }
 

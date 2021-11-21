@@ -69,7 +69,7 @@ public class Stmt extends Sentence {
     }
 
     @Override
-    public List<Instruction> dump() throws CompileError {
+    public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
         Operand address = null;
         if (leftVal != null) {

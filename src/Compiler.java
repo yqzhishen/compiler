@@ -34,7 +34,7 @@ public class Compiler {
                             declare i32 @getch()
                             declare void @putch(i32)
                             """);
-            writer.write(SemanticAnalyzer.getAnalyzer().generateIr(compUnit));
+            writer.write(SemanticAnalyzer.getAnalyzer().dump(compUnit));
             writer.flush();
         }
         catch (CompileError error) {

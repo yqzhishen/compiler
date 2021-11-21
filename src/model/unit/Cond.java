@@ -40,12 +40,12 @@ public class Cond extends AbstractUnit implements IExpr {
         return new OrCond().build();
     }
 
-    public List<Instruction> dump() throws CompileError {
+    public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
         Operand[] operands = new Operand[2];
         for (int i = 0; i < 2; ++i) {
             Cond subCond = (Cond) elements[i];
-            instructions.addAll(subCond.dump());
+            instructions.addAll(subCond.generateIr());
             operands[i] = subCond.getResult();
         }
         OpType op = switch (operator) {
