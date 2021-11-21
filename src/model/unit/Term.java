@@ -11,6 +11,10 @@ public class Term extends Expr {
 
     private boolean bool;
 
+    private boolean inverted;
+
+    private boolean negative;
+
     public Term() { }
 
     public Term(boolean bool) {
@@ -19,10 +23,13 @@ public class Term extends Expr {
 
     @Override
     public IExpr build() throws CompileError, IOException {
-        if (inverted()) {
-            return new NotCond(new Term(true).build());
+        this.buildUnaryOp();
+        if (inverted) {
+            Term term = new Term(true);
+            term.negative = negative;
+            return new NotCond(term.build());
         }
-        if (!positive()) {
+        if (negative) {
             return new Expr(new Number(0), TokenType.Sub, new Term().build());
         }
         IExpr expr;
@@ -48,27 +55,21 @@ public class Term extends Expr {
         return expr;
     }
 
-    private boolean inverted() throws CompileError, IOException {
-        boolean inverted = false;
+    private void buildUnaryOp() throws CompileError, IOException {
         TokenType nextType = this.lexer.nextType();
-        while (TokenType.Not.equals(nextType)) {
-            this.lexer.getToken();
-            inverted = !inverted;
-            nextType = this.lexer.nextType();
+        boolean stop = false;
+        while (!stop && nextType != null) {
+            switch (nextType) {
+                case Not -> inverted = !inverted;
+                case Add -> {}
+                case Sub -> negative = !negative;
+                default -> stop = true;
+            }
+            if (!stop) {
+                this.lexer.getToken();
+                nextType = this.lexer.nextType();
+            }
         }
-        return inverted;
-    }
-
-    private boolean positive() throws CompileError, IOException {
-        boolean positive = true;
-        TokenType nextType = this.lexer.nextType();
-        while (TokenType.Add.equals(nextType) || TokenType.Sub.equals(nextType)) {
-            this.lexer.getToken();
-            if (nextType.equals(TokenType.Sub))
-                positive = !positive;
-            nextType = this.lexer.nextType();
-        }
-        return positive;
     }
 
 }
