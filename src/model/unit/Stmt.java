@@ -96,7 +96,7 @@ public class Stmt extends Sentence {
                 }
                 else if (sym instanceof Variable rVar) {
                     Operand tmp = new Operand(true, Tagger.newTag());
-                    Load load = new Load("i32", tmp, "i32 *", rVar.getAddress());
+                    Load load = new Load("i32", tmp, "i32*", rVar.getAddress());
                     Store store = new Store("i32", tmp, "i32*", address);
                     instructions.add(load);
                     instructions.add(store);

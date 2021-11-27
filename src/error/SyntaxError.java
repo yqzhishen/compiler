@@ -7,13 +7,11 @@ import java.util.StringJoiner;
 
 public class SyntaxError extends CompileError {
 
-    private FilePosition pos;
+    private final FilePosition pos;
 
-    private TokenType[] expected;
+    private final TokenType[] expected;
 
-    private TokenType got;
-
-    public SyntaxError() { }
+    private final TokenType got;
 
     public SyntaxError(FilePosition pos, TokenType[] expected, TokenType got) {
         this.pos = pos;

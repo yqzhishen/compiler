@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Block extends AbstractUnit {
+public class Block extends Sentence {
 
     public Block() {
         this.sentences = new ArrayList<>();
@@ -34,9 +34,11 @@ public class Block extends AbstractUnit {
 
     public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
+        this.table.pushLayer();
         for (Sentence sentence : sentences) {
             instructions.addAll(sentence.generateIr());
         }
+        this.table.popLayer();
         return instructions;
     }
 

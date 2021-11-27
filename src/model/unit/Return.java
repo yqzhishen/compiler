@@ -50,7 +50,7 @@ public class Return extends Sentence {
             }
             else if (symbol instanceof Variable rVar) {
                 Operand tmp = new Operand(true, Tagger.newTag());
-                Load load = new Load("i32", tmp, "i32 *", rVar.getAddress());
+                Load load = new Load("i32", tmp, "i32*", rVar.getAddress());
                 model.ir.Return ret = new model.ir.Return("i32", tmp);
                 instructions.add(load);
                 instructions.add(ret);

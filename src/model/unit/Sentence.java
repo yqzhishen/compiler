@@ -29,6 +29,9 @@ public class Sentence extends AbstractUnit {
                 case Return -> {
                     return new Return().build();
                 }
+                case LBrace -> {
+                    return new Block().build();
+                }
             }
         }
         // Just for throwing an exception

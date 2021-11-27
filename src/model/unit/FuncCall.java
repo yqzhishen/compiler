@@ -59,7 +59,7 @@ public class FuncCall extends Expr implements IExpr {
                 }
                 else if (symbol instanceof Variable rVar) {
                     Operand tmp = new Operand(true, Tagger.newTag());
-                    Load load = new Load("i32", tmp, "i32 *", rVar.getAddress());
+                    Load load = new Load("i32", tmp, "i32*", rVar.getAddress());
                     instructions.add(load);
                     params.add(new Param("i32", tmp));
                 }

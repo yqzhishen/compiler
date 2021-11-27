@@ -57,7 +57,7 @@ public class Expr extends AbstractUnit implements IExpr {
                 }
                 else if (symbol instanceof Variable variable) {
                     operands[i] = new Operand(true, Tagger.newTag());
-                    Load load = new Load("i32", operands[i], "i32 *", variable.getAddress());
+                    Load load = new Load("i32", operands[i], "i32*", variable.getAddress());
                     instructions.add(load);
                 }
             }

@@ -58,7 +58,7 @@ public class NotCond extends Cond {
             }
             else if (symbol instanceof Variable variable) {
                 Operand tmp = new Operand(true, Tagger.newTag());
-                Load load = new Load("i32", tmp, "i32 *", variable.getAddress());
+                Load load = new Load("i32", tmp, "i32*", variable.getAddress());
                 instructions.add(load);
                 Operand result = new Operand(true, Tagger.newTag());
                 Compare compare = new Compare(result, Compare.CmpType.Eq, "i32",

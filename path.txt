@@ -44,6 +44,7 @@
 ./src/model/unit/Expr.java
 ./src/model/unit/FuncCall.java
 ./src/model/unit/FuncDef.java
+./src/model/unit/GlobalDef.java
 ./src/model/unit/IExpr.java
 ./src/model/unit/IfClause.java
 ./src/model/unit/IUnit.java

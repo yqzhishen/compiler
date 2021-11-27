@@ -2,11 +2,17 @@ package model.ir;
 
 public class Operand {
 
-    private final boolean tagged;
+    private boolean tagged;
 
     private int tag;
 
     private int value;
+
+    private String name;
+
+    public Operand(String globalName) {
+        this.name = globalName;
+    }
 
     public Operand(boolean tagged, int tagOrValue) {
         this.tagged = tagged;
@@ -14,16 +20,6 @@ public class Operand {
             this.tag = tagOrValue;
         else
             this.value = tagOrValue;
-    }
-
-    public boolean isTagged() {
-        return tagged;
-    }
-
-    public Integer getTag() {
-        if (tagged)
-            return tag;
-        return null;
     }
 
     public Integer getValue() {
@@ -34,7 +30,9 @@ public class Operand {
 
     @Override
     public String toString() {
-        return tagged ? "%" + tag : String.valueOf(value);
+        if (name == null)
+            return tagged ? "%" + tag : String.valueOf(value);
+        return "@" + name;
     }
 
 }

@@ -7,6 +7,7 @@ import model.token.Ident;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 public class SymTable {
 
@@ -16,11 +17,21 @@ public class SymTable {
         return table;
     }
 
-    private final Map<String, Symbol> valTable = new HashMap<>();
+    private final Stack<Map<String, Symbol>> valTable = new Stack<>();
 
     private final Map<String, Symbol> funcTable = new HashMap<>();
 
-    private SymTable() { }
+    private SymTable() {
+        pushLayer();
+    }
+
+    public void pushLayer() {
+        valTable.push(new HashMap<>());
+    }
+
+    public void popLayer() {
+        valTable.pop();
+    }
 
     public void put(Symbol symbol) throws SemanticError {
         String name = symbol.getIdent().getName();
@@ -28,7 +39,7 @@ public class SymTable {
             if (this.funcTable.put(name, symbol) != null)
                 throw new SemanticError(symbol.getIdent().getPos(), "function '" + name + "' already defined");
         }
-        else if (this.valTable.put(name, symbol) != null)
+        else if (this.valTable.peek().put(name, symbol) != null)
             throw new SemanticError(symbol.getIdent().getPos(), "symbol '" + name + "' already defined");
     }
 
@@ -36,12 +47,15 @@ public class SymTable {
         String name = ident.getName();
         switch (type) {
             case Const, Variable -> {
-                Symbol symbol = this.valTable.get(name);
-                if (symbol == null)
-                    throw new SemanticError(ident.getPos(), "unresolved symbol '" + name + "'");
-                if (type.equals(SymbolType.Const) && !type.equals(symbol.getType()))
-                    throw new SemanticError(ident.getPos(), "not a constant value");
-                return symbol;
+                for (int i = this.valTable.size() - 1; i >= 0; --i) {
+                    Symbol symbol = this.valTable.get(i).get(name);
+                    if (symbol == null)
+                        continue;
+                    if (type.equals(SymbolType.Const) && !type.equals(symbol.getType()))
+                        throw new SemanticError(ident.getPos(), '\'' + name + "' is not a constant value");
+                    return symbol;
+                }
+                throw new SemanticError(ident.getPos(), "unresolved symbol '" + name + "'");
             }
             case Function -> {
                 Symbol symbol = this.funcTable.get(name);

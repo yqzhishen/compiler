@@ -1,7 +1,6 @@
 package model.unit;
 
 import error.CompileError;
-import error.SemanticError;
 import model.ir.Instruction;
 import model.symbol.Symbol;
 import model.token.TokenType;
@@ -13,10 +12,6 @@ import java.util.List;
 public class Declare extends Sentence {
 
     protected List<Symbol> symbols = new ArrayList<>();
-
-    public List<Symbol> getSymbols() {
-        return symbols;
-    }
 
     @Override
     public Declare build() throws IOException, CompileError {

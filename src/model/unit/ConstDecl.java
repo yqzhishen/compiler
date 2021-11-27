@@ -1,7 +1,6 @@
 package model.unit;
 
 import error.CompileError;
-import error.SemanticError;
 import model.ir.Instruction;
 import model.symbol.Const;
 import model.symbol.Symbol;
@@ -9,7 +8,7 @@ import model.token.Ident;
 import model.token.TokenType;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ConstDecl extends Declare {
@@ -39,7 +38,7 @@ public class ConstDecl extends Declare {
             constant.setValue(expr.calculate());
             this.table.put(constant);
         }
-        return new ArrayList<>(0);
+        return Collections.emptyList();
     }
 
 }
