@@ -13,10 +13,6 @@ public class CompUnit extends AbstractUnit {
 
     private final List<FuncDef> funcDefs = new ArrayList<>();
 
-    public List<FuncDef> getFuncDefs() {
-        return this.funcDefs;
-    }
-
     @Override
     public CompUnit build() throws IOException, CompileError {
         while (true) {
