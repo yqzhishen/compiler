@@ -38,6 +38,9 @@ public class Token implements IUnit {
                 case "int" -> new Token(TokenType.Int);
                 case "if" -> new Token(TokenType.If);
                 case "else" -> new Token(TokenType.Else);
+                case "while" -> new Token(TokenType.While);
+                case "continue" -> new Token(TokenType.Continue);
+                case "break" -> new Token(TokenType.Break);
                 case "return" -> new Token(TokenType.Return);
                 default -> new Ident(param);
             };

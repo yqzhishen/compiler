@@ -19,7 +19,7 @@ public class Compiler {
         SyntaxParser parser = SyntaxParser.getParser();
         FileWriter writer = null;
         try {
-            SymTable table = SymTable.getSymTable();
+            SymTable table = SymTable.getInstance();
             table.put(new Function(new Ident("getint"), 0, false));
             table.put(new Function(new Ident("putint"), 1, true));
             table.put(new Function(new Ident("getch"), 0, false));

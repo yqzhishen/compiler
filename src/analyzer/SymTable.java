@@ -13,7 +13,7 @@ public class SymTable {
 
     private static final SymTable table = new SymTable();
 
-    public static SymTable getSymTable() {
+    public static SymTable getInstance() {
         return table;
     }
 

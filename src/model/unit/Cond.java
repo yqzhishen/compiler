@@ -21,7 +21,7 @@ public class Cond extends AbstractUnit implements IExpr {
 
     protected Operand result;
 
-    protected SymTable table = SymTable.getSymTable();
+    protected SymTable table = SymTable.getInstance();
 
     public Operand getResult() {
         return result;

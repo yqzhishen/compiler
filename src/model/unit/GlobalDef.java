@@ -60,7 +60,7 @@ public class GlobalDef extends AbstractUnit {
     }
 
     public String generateCode() throws CompileError {
-        SymTable table = SymTable.getSymTable();
+        SymTable table = SymTable.getInstance();
         if (this.isConst) {
             for (Symbol symbol : this.symbols) {
                 Const constant = (Const) symbol;

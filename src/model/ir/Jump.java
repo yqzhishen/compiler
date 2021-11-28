@@ -4,23 +4,19 @@ public class Jump extends Instruction {
 
     private final boolean conditional;
 
-    private Operand condition;
+    private Operand cond;
 
-    private final int[] labels;
+    private final Label[] labels;
 
-    public Jump(int label) {
+    public Jump(Label label) {
         this.conditional = false;
-        this.labels = new int[] { label };
+        this.labels = new Label[] { label };
     }
 
-    public Jump(Operand condition, int labelIfTrue, int labelIfFalse) {
+    public Jump(Operand cond, Label labelIfTrue, Label labelIfFalse) {
         this.conditional = true;
-        this.condition = condition;
-        this.labels = new int[] { labelIfTrue, labelIfFalse };
-    }
-
-    public boolean isConditional() {
-        return conditional;
+        this.cond = cond;
+        this.labels = new Label[] { labelIfTrue, labelIfFalse };
     }
 
     @Override
@@ -31,10 +27,10 @@ public class Jump extends Instruction {
     @Override
     public String toString() {
         if (conditional) {
-            return "br i1 " + condition + ", label %" + labels[0] + ", label %" + labels[1];
+            return "br i1 " + cond + ", label %" + labels[0].getTag() + ", label %" + labels[1].getTag();
         }
         else {
-            return "br label %" + labels[0];
+            return "br label %" + labels[0].getTag();
         }
     }
 }

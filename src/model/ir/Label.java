@@ -2,10 +2,20 @@ package model.ir;
 
 public class Label extends Instruction {
 
-    private final int tag;
+    private int tag;
 
     public Label(int tag) {
         this.tag = tag;
+    }
+
+    public Label() { }
+
+    public void setTag(int tag) {
+        this.tag = tag;
+    }
+
+    public int getTag() {
+        return this.tag;
     }
 
     @Override

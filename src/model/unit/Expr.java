@@ -23,7 +23,7 @@ public class Expr extends AbstractUnit implements IExpr {
 
     protected Operand result;
 
-    protected SymTable table = SymTable.getSymTable();
+    protected SymTable table = SymTable.getInstance();
 
     public Expr() { }
 

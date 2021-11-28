@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Sentence extends AbstractUnit {
 
-    protected SymTable table = SymTable.getSymTable();
+    protected SymTable table = SymTable.getInstance();
 
     @Override
     public Sentence build() throws IOException, CompileError {
@@ -25,6 +25,12 @@ public class Sentence extends AbstractUnit {
                 }
                 case If -> {
                     return new IfClause().build();
+                }
+                case While -> {
+                    return new WhileClause().build();
+                }
+                case Continue, Break -> {
+                    return new LoopJump().build();
                 }
                 case Return -> {
                     return new Return().build();

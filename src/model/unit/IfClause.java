@@ -3,7 +3,6 @@ package model.unit;
 import analyzer.Tagger;
 import error.CompileError;
 import model.ir.Instruction;
-import model.ir.InstructionType;
 import model.ir.Jump;
 import model.ir.Label;
 import model.token.TokenType;
@@ -42,31 +41,29 @@ public class IfClause extends Sentence {
     @Override
     public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>(condition.generateIr());
-        int tagIfTrue = Tagger.newTag();
-        Label labelIfTrue = new Label(tagIfTrue);
+        Label labelIfTrue = new Label(Tagger.newTag());
         List<Instruction> instructionsIfTrue = ifBlock.generateIr();
-        int tagIfFalse = -1;
         Label labelIfFalse = null;
         List<Instruction> instructionsIfFalse = new ArrayList<>(0);
         if (elseBlock != null) {
-            tagIfFalse = Tagger.newTag();
-            labelIfFalse = new Label(tagIfFalse);
+            labelIfFalse = new Label(Tagger.newTag());
             instructionsIfFalse = elseBlock.generateIr();
         }
-        int tagPass = Tagger.newTag();
-        Label labelPass = new Label(tagPass);
-        if (!instructionsIfTrue.get(instructionsIfTrue.size() - 1).getType().equals(InstructionType.Ret)) {
-            instructionsIfTrue.add(new Jump(tagPass));
+        Label labelPass = new Label(Tagger.newTag());
+        switch (instructionsIfTrue.get(instructionsIfTrue.size() - 1).getType()) {
+            case Br, Ret -> {}
+            default -> instructionsIfTrue.add(new Jump(labelPass));
         }
         Jump jump;
         if (elseBlock != null) {
-            jump = new Jump(condition.getResult(), tagIfTrue, tagIfFalse);
-            if (!instructionsIfFalse.get(instructionsIfFalse.size() - 1).getType().equals(InstructionType.Ret)) {
-                instructionsIfFalse.add(new Jump(tagPass));
+            jump = new Jump(condition.getResult(), labelIfTrue, labelIfFalse);
+            switch (instructionsIfFalse.get(instructionsIfFalse.size() - 1).getType()) {
+                case Br, Ret -> {}
+                default -> instructionsIfFalse.add(new Jump(labelPass));
             }
         }
         else {
-            jump = new Jump(condition.getResult(), tagIfTrue, tagPass);
+            jump = new Jump(condition.getResult(), labelIfTrue, labelPass);
         }
         instructions.add(jump);
         instructions.add(labelIfTrue);
