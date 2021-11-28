@@ -35,14 +35,18 @@ public class Sentence extends AbstractUnit {
                 case Return -> {
                     return new Return().build();
                 }
+                case Semicolon -> {
+                    lexer.getToken();
+                    return new EmptyStmt();
+                }
                 case LBrace -> {
                     return new Block().build();
                 }
             }
         }
         // Just for throwing an exception
-        this.require(TokenType.Add, TokenType.Sub, TokenType.LPar, TokenType.Number,
-                TokenType.Ident, TokenType.Const, TokenType.Int, TokenType.If, TokenType.Return);
+        this.require(TokenType.Add, TokenType.Sub, TokenType.LPar, TokenType.Number, TokenType.Ident, TokenType.Const, TokenType.Int,
+                TokenType.If, TokenType.While, TokenType.Continue, TokenType.Break, TokenType.Return, TokenType.Semicolon, TokenType.LBrace);
         return null;
     }
 
