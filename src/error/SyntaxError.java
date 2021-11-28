@@ -21,13 +21,16 @@ public class SyntaxError extends CompileError {
 
     @Override
     public String getMessage() {
-        if (this.got == null)
-            return "Syntax error at " + this.pos + ": unexpected end of file";
+        StringBuilder builder = new StringBuilder("Syntax error at ").append(this.pos).append(": expected ");
         StringJoiner exp = new StringJoiner("> | <", "<", ">");
         for (TokenType type : this.expected) {
             exp.add(type.name());
         }
-        return "Syntax error at " + this.pos + ": expected " + exp + ", got <" + got.name() + "> instead";
+        builder.append(exp);
+        if (this.got != null) {
+            builder.append(", got <").append(got.name()).append("> instead");
+        }
+        return builder.toString();
     }
 
 }
