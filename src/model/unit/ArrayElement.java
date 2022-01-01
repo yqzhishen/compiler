@@ -37,7 +37,7 @@ public class ArrayElement extends Expr implements IExpr {
     @Override
     public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = this.generateIrOfAddress();
-        Operand value = new Operand(true, Tagger.newTag());
+        Operand value = Operand.local(Tagger.newTag());
         instructions.add(new Load("i32", value, "i32*", this.result));
         this.result = value;
         return instructions;
@@ -54,18 +54,18 @@ public class ArrayElement extends Expr implements IExpr {
             throw new SemanticError(ident.getPos(), "too much indexes for array '" + ident.getName() + "'");
         }
         List<Operand> indexes = new ArrayList<>();
-        indexes.add(new Operand(false, 0));
+        indexes.add(Operand.number(0));
         for (IExpr index : this.indexes) {
             if (index instanceof Number number) {
-                indexes.add(new Operand(false, number.getValue()));
+                indexes.add(Operand.number(number.getValue()));
             }
             else if (index instanceof Ident ident) {
                 Symbol symbol = this.table.get(ident, SymbolType.Variable);
                 if (symbol instanceof Const pConst) {
-                    indexes.add(new Operand(false, pConst.getValue()));
+                    indexes.add(Operand.number(pConst.getValue()));
                 }
                 else if (symbol instanceof Variable rVar) {
-                    Operand tmp = new Operand(true, Tagger.newTag());
+                    Operand tmp = Operand.local(Tagger.newTag());
                     Load load = new Load("i32", tmp, "i32*", rVar.getAddress());
                     instructions.add(load);
                     indexes.add(tmp);
@@ -79,7 +79,7 @@ public class ArrayElement extends Expr implements IExpr {
                 indexes.add(expression.getResult());
             }
         }
-        Operand result = new Operand(true, Tagger.newTag());
+        Operand result = Operand.local(Tagger.newTag());
         instructions.add(new GetElementPtr(result, array.getShapeToString(), array.getAddress(), indexes));
         this.result = result;
         return instructions;

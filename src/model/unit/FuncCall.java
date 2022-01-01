@@ -50,15 +50,15 @@ public class FuncCall extends Expr implements IExpr {
         List<Param> params = new ArrayList<>();
         for (IExpr param : this.params) {
             if (param instanceof Number number) {
-                params.add(new Param("i32", new Operand(false, number.getValue())));
+                params.add(new Param("i32", Operand.number(number.getValue())));
             }
             else if (param instanceof Ident ident) {
                 Symbol symbol = this.table.get(ident, SymbolType.Variable);
                 if (symbol instanceof Const pConst) {
-                    params.add(new Param("i32", new Operand(false, pConst.getValue())));
+                    params.add(new Param("i32", Operand.number(pConst.getValue())));
                 }
                 else if (symbol instanceof Variable rVar) {
-                    Operand tmp = new Operand(true, Tagger.newTag());
+                    Operand tmp = Operand.local(Tagger.newTag());
                     Load load = new Load("i32", tmp, "i32*", rVar.getAddress());
                     instructions.add(load);
                     params.add(new Param("i32", tmp));
@@ -77,7 +77,7 @@ public class FuncCall extends Expr implements IExpr {
             instructions.add(call);
         }
         else {
-            Operand result = new Operand(true, Tagger.newTag());
+            Operand result = Operand.local(Tagger.newTag());
             Call call = new Call("i32", result, function.getIdent().getName(), params);
             this.result = result;
             instructions.add(call);

@@ -102,7 +102,7 @@ public class Stmt extends Sentence {
         }
         if (expr instanceof Number number) {
             if (leftVal != null || leftEle != null) {
-                Store store = new Store("i32", new Operand(false, number.getValue()), "i32*", address);
+                Store store = new Store("i32", Operand.number(number.getValue()), "i32*", address);
                 instructions.add(store);
             }
         }
@@ -110,11 +110,11 @@ public class Stmt extends Sentence {
             Symbol sym = table.get(ident, SymbolType.Variable);
             if (leftVal != null || leftEle != null) {
                 if (sym instanceof Const rConst) {
-                    Store store = new Store("i32", new Operand(false, rConst.getValue()), "i32*", address);
+                    Store store = new Store("i32", Operand.number(rConst.getValue()), "i32*", address);
                     instructions.add(store);
                 }
                 else if (sym instanceof Variable rVar) {
-                    Operand tmp = new Operand(true, Tagger.newTag());
+                    Operand tmp = Operand.local(Tagger.newTag());
                     Load load = new Load("i32", tmp, "i32*", rVar.getAddress());
                     Store store = new Store("i32", tmp, "i32*", address);
                     instructions.add(load);

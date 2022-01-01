@@ -48,15 +48,15 @@ public class Expr extends AbstractUnit implements IExpr {
         for (int i = 0; i < 2; ++i) {
             IExpr subExpr = elements[i];
             if (subExpr instanceof Number number) {
-                operands[i] = new Operand(false, number.getValue());
+                operands[i] = Operand.number(number.getValue());
             }
             else if (subExpr instanceof Ident ident) {
                 Symbol symbol = this.table.get(ident, SymbolType.Variable);
                 if (symbol instanceof Const constant) {
-                    operands[i] = new Operand(false, constant.getValue());
+                    operands[i] = Operand.number(constant.getValue());
                 }
                 else if (symbol instanceof Variable variable) {
-                    operands[i] = new Operand(true, Tagger.newTag());
+                    operands[i] = Operand.local(Tagger.newTag());
                     Load load = new Load("i32", operands[i], "i32*", variable.getAddress());
                     instructions.add(load);
                 }
@@ -70,7 +70,7 @@ public class Expr extends AbstractUnit implements IExpr {
             }
             else if (subExpr instanceof Cond condition) {
                 instructions.addAll(condition.generateIr());
-                Operand extended = new Operand(true, Tagger.newTag());
+                Operand extended = Operand.local(Tagger.newTag());
                 Extend extend = new Extend("i32", extended, "i1", condition.getResult());
                 instructions.add(extend);
                 operands[i] = extended;
@@ -84,7 +84,7 @@ public class Expr extends AbstractUnit implements IExpr {
             case Mod -> OpType.Mod;
             default -> null;
         };
-        Operand result = new Operand(true, Tagger.newTag());
+        Operand result = Operand.local(Tagger.newTag());
         Operate operate = new Operate("i32", result, op, operands[0], operands[1]);
         this.result = result;
         instructions.add(operate);

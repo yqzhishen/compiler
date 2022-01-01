@@ -68,7 +68,7 @@ public class ConstDecl extends Declare {
                     shape.set(i, new Number(shape.get(i).calculate()));
                 }
                 String shapeToString = array.getShapeToString();
-                Operand address = Operand.reg(Tagger.newTag());
+                Operand address = Operand.local(Tagger.newTag());
                 Allocate allocate = new Allocate(shapeToString, address);
                 instructions.add(allocate);
                 array.setAddress(address);
@@ -81,7 +81,7 @@ public class ConstDecl extends Declare {
                     size *= ((Number) dim).getValue();
                     indexes.add(zero);
                 }
-                Operand head = Operand.reg(Tagger.newTag());
+                Operand head = Operand.local(Tagger.newTag());
                 instructions.add(new GetElementPtr(head, shapeToString, address, indexes));
                 instructions.add(
                         new Call("memset", List.of(
@@ -109,7 +109,7 @@ public class ConstDecl extends Declare {
         int step = size / length;
         for (int index = 0; index < length && index < initializers.size(); ++index) {
             if (shape.size() == 1) {
-                Operand target = Operand.reg(Tagger.newTag());
+                Operand target = Operand.local(Tagger.newTag());
                 instructions.add(new GetElementPtr(target, "i32", head, List.of(Operand.number(offset + index * step))));
                 instructions.add(new Store("i32", Operand.number(((IExpr) initializers.get(index)).calculate()), "i32*", target));
             }

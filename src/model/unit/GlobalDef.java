@@ -101,7 +101,7 @@ public class GlobalDef extends AbstractUnit {
             for (Symbol symbol : this.symbols) {
                 if (symbol instanceof Variable variable) {
                     String name = variable.getIdent().getName();
-                    variable.setAddress(new Operand(name));
+                    variable.setAddress(Operand.global(name));
                     table.put(variable);
                     builder.append('@').append(name).append(" = dso_local global i32 ");
                     builder.append(variable.getExpr().calculate()).append('\n');

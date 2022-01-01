@@ -10,23 +10,23 @@ public class Operand {
 
     private String name;
 
-    public static Operand reg(int tag) {
-        return new Operand(true, tag);
-    }
-
     public static Operand number(int value) {
         return new Operand(false, value);
+    }
+
+    public static Operand local(int tag) {
+        return new Operand(true, tag);
     }
 
     public static Operand global(String name) {
         return new Operand(name);
     }
 
-    public Operand(String globalName) {
+    private Operand(String globalName) {
         this.name = globalName;
     }
 
-    public Operand(boolean tagged, int tagOrValue) {
+    private Operand(boolean tagged, int tagOrValue) {
         this.tagged = tagged;
         if (tagged)
             this.tag = tagOrValue;

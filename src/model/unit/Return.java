@@ -38,17 +38,17 @@ public class Return extends Sentence {
     public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>(2);
         if (expr instanceof Number number) {
-            model.ir.Return ret = new model.ir.Return("i32", new Operand(false, number.getValue()));
+            model.ir.Return ret = new model.ir.Return("i32", Operand.number(number.getValue()));
             instructions.add(ret);
         }
         else if (expr instanceof Ident ident) {
             Symbol symbol = this.table.get(ident, SymbolType.Variable);
             if (symbol instanceof Const rConst) {
-                model.ir.Return ret = new model.ir.Return("i32", new Operand(false, rConst.getValue()));
+                model.ir.Return ret = new model.ir.Return("i32", Operand.number(rConst.getValue()));
                 instructions.add(ret);
             }
             else if (symbol instanceof Variable rVar) {
-                Operand tmp = new Operand(true, Tagger.newTag());
+                Operand tmp = Operand.local(Tagger.newTag());
                 Load load = new Load("i32", tmp, "i32*", rVar.getAddress());
                 model.ir.Return ret = new model.ir.Return("i32", tmp);
                 instructions.add(load);

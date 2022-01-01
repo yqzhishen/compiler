@@ -61,7 +61,7 @@ public class VarDecl extends Declare {
         List<Instruction> instructions = new ArrayList<>();
         for (Symbol symbol : this.symbols) {
             if (symbol instanceof Variable variable) {
-                Operand address = new Operand(true, Tagger.newTag());
+                Operand address = Operand.local(Tagger.newTag());
                 Allocate allocate = new Allocate("i32", address);
                 instructions.add(allocate);
                 variable.setAddress(address);
@@ -77,7 +77,7 @@ public class VarDecl extends Declare {
                     shape.set(i, new Number(shape.get(i).calculate()));
                 }
                 String shapeToString = array.getShapeToString();
-                Operand address = Operand.reg(Tagger.newTag());
+                Operand address = Operand.local(Tagger.newTag());
                 Allocate allocate = new Allocate(shapeToString, address);
                 instructions.add(allocate);
                 array.setAddress(address);
@@ -93,7 +93,7 @@ public class VarDecl extends Declare {
                     size *= ((Number) dim).getValue();
                     indexes.add(zero);
                 }
-                Operand head = Operand.reg(Tagger.newTag());
+                Operand head = Operand.local(Tagger.newTag());
                 instructions.add(new GetElementPtr(head, shapeToString, address, indexes));
                 instructions.add(
                         new Call("memset", List.of(
@@ -114,15 +114,15 @@ public class VarDecl extends Declare {
     private List<Instruction> storeExpr(Operand address, IExpr expr) throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
         if (expr instanceof Number number) {
-            Store store = new Store("i32", new Operand(false, number.getValue()), "i32*", address);
+            Store store = new Store("i32", Operand.number(number.getValue()), "i32*", address);
             instructions.add(store);
         } else if (expr instanceof Ident ident) {
             Symbol sym = table.get(ident, SymbolType.Variable);
             if (sym instanceof Const rConst) {
-                Store store = new Store("i32", new Operand(false, rConst.getValue()), "i32*", address);
+                Store store = new Store("i32", Operand.number(rConst.getValue()), "i32*", address);
                 instructions.add(store);
             } else if (sym instanceof Variable rVar) {
-                Operand tmp = new Operand(true, Tagger.newTag());
+                Operand tmp = Operand.local(Tagger.newTag());
                 Load load = new Load("i32", tmp, "i32*", rVar.getAddress());
                 Store store = new Store("i32", tmp, "i32*", address);
                 instructions.add(load);
@@ -149,7 +149,7 @@ public class VarDecl extends Declare {
         int step = size / length;
         for (int index = 0; index < length && index < initializers.size(); ++index) {
             if (shape.size() == 1) {
-                Operand target = Operand.reg(Tagger.newTag());
+                Operand target = Operand.local(Tagger.newTag());
                 instructions.add(new GetElementPtr(target, "i32", head, List.of(Operand.number(offset + index * step))));
                 instructions.addAll(storeExpr(target, (IExpr) initializers.get(index)));
             }

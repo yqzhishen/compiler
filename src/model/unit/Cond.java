@@ -53,7 +53,7 @@ public class Cond extends AbstractUnit implements IExpr {
             case Or -> OpType.Or;
             default -> null;
         };
-        Operand result = new Operand(true, Tagger.newTag());
+        Operand result = Operand.local(Tagger.newTag());
         Operate operate = new Operate("i1", result, op, operands[0], operands[1]);
         this.result = result;
         instructions.add(operate);
