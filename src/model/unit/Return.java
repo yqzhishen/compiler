@@ -6,7 +6,6 @@ import error.SemanticError;
 import model.ir.Instruction;
 import model.ir.Load;
 import model.ir.Operand;
-import model.ir.Store;
 import model.symbol.Const;
 import model.symbol.Symbol;
 import model.symbol.SymbolType;
@@ -57,7 +56,7 @@ public class Return extends Sentence {
             }
         }
         else if (expr instanceof Expr expression) {
-            instructions.addAll(expression.dump());
+            instructions.addAll(expression.generateIr());
             if (expression instanceof FuncCall call && expression.getResult() == null) {
                 throw new SemanticError(call.getIdent().getPos(), "incompatible type (required 'int', got 'void'");
             }

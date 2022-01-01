@@ -36,8 +36,11 @@ public class Term extends Expr {
         switch (this.lexer.nextType()) {
             case Number -> expr = (Number) this.lexer.getToken();
             case Ident -> {
-                if (TokenType.LPar.equals(this.lexer.nextType(1)))
+                TokenType type = this.lexer.nextType(1);
+                if (TokenType.LPar.equals(type))
                     expr = new FuncCall().build();
+                else if (TokenType.LBracket.equals(type))
+                    expr = new ArrayElement().build();
                 else
                     expr = (Ident) this.lexer.getToken();
             }

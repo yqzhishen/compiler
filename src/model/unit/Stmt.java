@@ -9,10 +9,7 @@ import model.ir.Instruction;
 import model.ir.Load;
 import model.ir.Operand;
 import model.ir.Store;
-import model.symbol.Const;
-import model.symbol.Symbol;
-import model.symbol.SymbolType;
-import model.symbol.Variable;
+import model.symbol.*;
 import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
@@ -25,11 +22,9 @@ public class Stmt extends Sentence {
 
     private Ident leftVal;
 
-    private IExpr expr;
+    private ArrayElement leftEle;
 
-    public Ident getLeftVal() {
-        return this.leftVal;
-    }
+    private IExpr expr;
 
     public IExpr getExpr() {
         return this.expr;
@@ -45,10 +40,26 @@ public class Stmt extends Sentence {
                 return this;
             }
             case Ident -> {
-                TokenType aheadType = this.lexer.nextType(1);
-                if (TokenType.Assign.equals(aheadType)) {
-                    this.leftVal = (Ident) this.lexer.getToken();
-                    this.lexer.getToken();
+                boolean isAssign = false;
+                int i = 1;
+                TokenType aheadType;
+                do {
+                    aheadType = this.lexer.nextType(i);
+                    if (TokenType.Assign.equals(aheadType)) {
+                        isAssign = true;
+                        break;
+                    }
+                    ++i;
+                } while (!TokenType.Semicolon.equals(aheadType));
+                if (isAssign) {
+                    aheadType = lexer.nextType(1);
+                    if (TokenType.LBracket.equals(aheadType)) {
+                        this.leftEle = new ArrayElement().build();
+                    }
+                    else {
+                        this.leftVal = (Ident) this.lexer.getToken();
+                    }
+                    this.lexer.getToken(); // Assign
                 }
                 this.expr = new Expr().build();
                 this.require(TokenType.Semicolon);
@@ -81,15 +92,23 @@ public class Stmt extends Sentence {
                 throw new SemanticError(leftVal.getPos(), "constant value '" + leftVal.getName() + "' cannot be assigned");
             }
         }
+        else if (leftEle != null) {
+            Array leftArr = (Array) table.get(leftEle.getIdent(), SymbolType.Array);
+            if (leftArr.isConst()) {
+                throw new SemanticError(leftEle.getIdent().getPos(), "element of constant array '" + leftEle.getIdent().getName() + "' cannot be assigned");
+            }
+            instructions.addAll(leftEle.generateIrOfAddress());
+            address = leftEle.getResult();
+        }
         if (expr instanceof Number number) {
-            if (leftVal != null) {
+            if (leftVal != null || leftEle != null) {
                 Store store = new Store("i32", new Operand(false, number.getValue()), "i32*", address);
                 instructions.add(store);
             }
         }
         else if (expr instanceof Ident ident) {
             Symbol sym = table.get(ident, SymbolType.Variable);
-            if (leftVal != null) {
+            if (leftVal != null || leftEle != null) {
                 if (sym instanceof Const rConst) {
                     Store store = new Store("i32", new Operand(false, rConst.getValue()), "i32*", address);
                     instructions.add(store);
@@ -104,8 +123,8 @@ public class Stmt extends Sentence {
             }
         }
         else if (expr instanceof Expr expression) {
-            instructions.addAll(expression.dump());
-            if (leftVal != null) {
+            instructions.addAll(expression.generateIr());
+            if (leftVal != null || leftEle != null) {
                 if (expression instanceof FuncCall call && expression.getResult() == null) {
                     throw new SemanticError(call.getIdent().getPos(), "incompatible type (required 'int', got 'void'");
                 }

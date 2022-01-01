@@ -69,7 +69,7 @@ public class NotCond extends Cond {
             }
         }
         else if (expr instanceof Expr expression) {
-            instructions.addAll(expression.dump());
+            instructions.addAll(expression.generateIr());
             if (expression instanceof FuncCall call && expression.getResult() == null) {
                 throw new SemanticError(call.getIdent().getPos(), "incompatible type (required 'int', got 'void'");
             }

@@ -2,8 +2,15 @@ package model.unit;
 
 import error.CompileError;
 
-public interface IExpr extends IUnit {
+import java.util.List;
+
+public interface IExpr extends IUnit, IArrayInitializer {
 
     Integer calculate() throws CompileError;
+
+    @Override
+    default List<IArrayInitializer> initializersOfThisDimension() {
+        throw new IllegalStateException("No initializer for 0-dimension value");
+    }
 
 }

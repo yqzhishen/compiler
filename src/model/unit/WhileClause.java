@@ -49,6 +49,7 @@ public class WhileClause extends Sentence {
         }
         tail.setTag(Tagger.newTag());
         instructions.add(tail);
+        stack.popLayer();
         return instructions;
     }
 

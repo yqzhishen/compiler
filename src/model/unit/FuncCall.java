@@ -40,7 +40,7 @@ public class FuncCall extends Expr implements IExpr {
     }
 
     @Override
-    public List<Instruction> dump() throws CompileError {
+    public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
         Function function = (Function) table.get(ident, SymbolType.Function);
         if (params.size() < function.getSchema())
@@ -65,7 +65,7 @@ public class FuncCall extends Expr implements IExpr {
                 }
             }
             else if (param instanceof Expr expression) {
-                instructions.addAll(expression.dump());
+                instructions.addAll(expression.generateIr());
                 if (expression instanceof FuncCall call && expression.getResult() == null) {
                     throw new SemanticError(call.getIdent().getPos(), "incompatible type (required 'int', got 'void'");
                 }

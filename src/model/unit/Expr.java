@@ -42,7 +42,7 @@ public class Expr extends AbstractUnit implements IExpr {
         return new AddExpr().build();
     }
 
-    public List<Instruction> dump() throws CompileError {
+    public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
         Operand[] operands = new Operand[2];
         for (int i = 0; i < 2; ++i) {
@@ -62,7 +62,7 @@ public class Expr extends AbstractUnit implements IExpr {
                 }
             }
             else if (subExpr instanceof Expr expression) {
-                instructions.addAll(expression.dump());
+                instructions.addAll(expression.generateIr());
                 if (expression instanceof FuncCall call && expression.getResult() == null) {
                     throw new SemanticError(call.getIdent().getPos(), "incompatible type (required 'int', got 'void'");
                 }

@@ -1,6 +1,7 @@
 package analyzer;
 
 import error.SemanticError;
+import model.symbol.Array;
 import model.symbol.Symbol;
 import model.symbol.SymbolType;
 import model.token.Ident;
@@ -46,13 +47,15 @@ public class SymTable {
     public Symbol get(Ident ident, SymbolType type) throws SemanticError {
         String name = ident.getName();
         switch (type) {
-            case Const, Variable -> {
+            case Const, Variable, Array -> {
                 for (int i = this.valTable.size() - 1; i >= 0; --i) {
                     Symbol symbol = this.valTable.get(i).get(name);
                     if (symbol == null)
                         continue;
                     if (type.equals(SymbolType.Const) && !type.equals(symbol.getType()))
                         throw new SemanticError(ident.getPos(), '\'' + name + "' is not a constant value");
+                    if (type.equals(SymbolType.Array) && !type.equals(symbol.getType()))
+                        throw new SemanticError(ident.getPos(), '\'' + name + "' is not an array");
                     return symbol;
                 }
                 throw new SemanticError(ident.getPos(), "unresolved symbol '" + name + "'");

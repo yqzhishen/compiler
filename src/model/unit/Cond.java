@@ -62,7 +62,7 @@ public class Cond extends AbstractUnit implements IExpr {
 
     @Override
     public Integer calculate() {
-        return null;
+        throw new UnsupportedOperationException("Calculation of condition is not supported");
     }
 
 }

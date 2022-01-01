@@ -33,6 +33,7 @@ public class Compiler {
                             declare void @putint(i32)
                             declare i32 @getch()
                             declare void @putch(i32)
+                            declare void @memset(i32*, i32, i32)
                             """);
             writer.write(SemanticAnalyzer.getAnalyzer().dump(compUnit));
             writer.flush();

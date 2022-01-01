@@ -1,5 +1,9 @@
 package model.token;
 
+import analyzer.SymTable;
+import error.CompileError;
+import model.symbol.Const;
+import model.symbol.SymbolType;
 import model.unit.IExpr;
 
 public class Ident extends Token implements IExpr {
@@ -21,8 +25,8 @@ public class Ident extends Token implements IExpr {
     }
 
     @Override
-    public Integer calculate() {
-        return null;
+    public Integer calculate() throws CompileError {
+        return ((Const) SymTable.getInstance().get(this, SymbolType.Const)).getValue();
     }
 
 }

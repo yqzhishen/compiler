@@ -10,6 +10,18 @@ public class Operand {
 
     private String name;
 
+    public static Operand reg(int tag) {
+        return new Operand(true, tag);
+    }
+
+    public static Operand number(int value) {
+        return new Operand(false, value);
+    }
+
+    public static Operand global(String name) {
+        return new Operand(name);
+    }
+
     public Operand(String globalName) {
         this.name = globalName;
     }

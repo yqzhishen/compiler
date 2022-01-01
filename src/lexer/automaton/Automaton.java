@@ -40,6 +40,8 @@ public class Automaton {
                         case '!' -> 29;
                         case '&' -> 31;
                         case '|' -> 33;
+                        case '[' -> 35;
+                        case ']' -> 36;
                         default -> -1;
                     };
                 }
@@ -244,7 +246,11 @@ public class Automaton {
             // 33
             new SimpleState(null, '|', 34),
             // 34
-            new SimpleState(TokenType.Or)
+            new SimpleState(TokenType.Or),
+            // 35
+            new SimpleState(TokenType.LBracket),
+            // 36
+            new SimpleState(TokenType.RBracket)
     };
 
     private int current = 0;

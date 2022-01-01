@@ -4,7 +4,7 @@ public enum InstructionType {
 
     Op, Icmp, Zext,
     Alloca, Store, Load,
-    Call, Ret, Br,
+    Call, Ret, Br, GEP,
     Label
 
 }

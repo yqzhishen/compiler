@@ -15,6 +15,7 @@
 ./src/model/ir/Call.java
 ./src/model/ir/Compare.java
 ./src/model/ir/Extend.java
+./src/model/ir/GetElementPtr.java
 ./src/model/ir/Instruction.java
 ./src/model/ir/InstructionType.java
 ./src/model/ir/Jump.java
@@ -24,6 +25,7 @@
 ./src/model/ir/Operate.java
 ./src/model/ir/Return.java
 ./src/model/ir/Store.java
+./src/model/symbol/Array.java
 ./src/model/symbol/Const.java
 ./src/model/symbol/Function.java
 ./src/model/symbol/Symbol.java
@@ -36,6 +38,8 @@
 ./src/model/unit/AbstractUnit.java
 ./src/model/unit/AddExpr.java
 ./src/model/unit/AndCond.java
+./src/model/unit/ArrayElement.java
+./src/model/unit/ArrayInitializer.java
 ./src/model/unit/Block.java
 ./src/model/unit/CmpCond.java
 ./src/model/unit/CompUnit.java
@@ -47,6 +51,7 @@
 ./src/model/unit/FuncCall.java
 ./src/model/unit/FuncDef.java
 ./src/model/unit/GlobalDef.java
+./src/model/unit/IArrayInitializer.java
 ./src/model/unit/IExpr.java
 ./src/model/unit/IfClause.java
 ./src/model/unit/IUnit.java
