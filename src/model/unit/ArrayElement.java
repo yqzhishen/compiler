@@ -19,8 +19,18 @@ public class ArrayElement extends Expr implements IExpr {
 
     private final List<IExpr> indexes = new ArrayList<>();
 
+    private boolean partOfArray;
+
     public Ident getIdent() {
         return ident;
+    }
+
+    public List<IExpr> getIndexes() {
+        return indexes;
+    }
+
+    public void setPartOfArray(boolean partOfArray) {
+        this.partOfArray = partOfArray;
     }
 
     @Override
@@ -47,14 +57,16 @@ public class ArrayElement extends Expr implements IExpr {
         List<Instruction> instructions = new ArrayList<>();
         Array array = (Array) table.get(ident, SymbolType.Array);
         List<IExpr> shape = array.getShape();
-        if (indexes.size() < shape.size()) {
+        if (indexes.size() < shape.size() && !partOfArray) {
             throw new SemanticError(ident.getPos(), "too few indexes for array '" + ident.getName() + "'");
         }
         else if (indexes.size() > shape.size()) {
-            throw new SemanticError(ident.getPos(), "too much indexes for array '" + ident.getName() + "'");
+            throw new SemanticError(ident.getPos(), "too many indexes for array '" + ident.getName() + "'");
         }
         List<Operand> indexes = new ArrayList<>();
-        indexes.add(Operand.number(0));
+        if (((Number) shape.get(0)).getValue() != -1) {
+            indexes.add(Operand.number(0));
+        }
         for (IExpr index : this.indexes) {
             if (index instanceof Number number) {
                 indexes.add(Operand.number(number.getValue()));

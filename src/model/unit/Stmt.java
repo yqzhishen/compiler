@@ -88,6 +88,9 @@ public class Stmt extends Sentence {
             if (leftSym instanceof Variable variable) {
                 address = variable.getAddress();
             }
+            else if (leftSym instanceof Array) {
+                throw new SemanticError(leftVal.getPos(), "expected index for array '" + leftVal.getName() + '\'');
+            }
             else {
                 throw new SemanticError(leftVal.getPos(), "constant value '" + leftVal.getName() + "' cannot be assigned");
             }

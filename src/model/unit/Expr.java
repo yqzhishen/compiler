@@ -60,6 +60,9 @@ public class Expr extends AbstractUnit implements IExpr {
                     Load load = new Load("i32", operands[i], "i32*", variable.getAddress());
                     instructions.add(load);
                 }
+                else if (symbol instanceof Array array) {
+                    throw new SemanticError(ident.getPos(), "expected index for array '" + array.getIdent().getName() + '\'');
+                }
             }
             else if (subExpr instanceof Expr expression) {
                 instructions.addAll(expression.generateIr());

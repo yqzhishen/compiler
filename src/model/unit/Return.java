@@ -13,12 +13,15 @@ import model.symbol.Variable;
 import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
+import reader.FilePosition;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Return extends Sentence {
+
+    private FilePosition position;
 
     private IExpr expr;
 
@@ -28,8 +31,10 @@ public class Return extends Sentence {
 
     @Override
     public Return build() throws IOException, CompileError {
-        this.require(TokenType.Return);
-        this.expr = new Expr().build();
+        position = this.require(TokenType.Return).getPos();
+        if (!TokenType.Semicolon.equals(lexer.nextType())) {
+            this.expr = new Expr().build();
+        }
         this.require(TokenType.Semicolon);
         return this;
     }
@@ -37,6 +42,16 @@ public class Return extends Sentence {
     @Override
     public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>(2);
+        if (expr == null) {
+            if (!FuncDef.inVoidFunction) {
+                throw new SemanticError(position, "missing return value");
+            }
+            instructions.add(new model.ir.Return());
+            return instructions;
+        }
+        else if (FuncDef.inVoidFunction) {
+            throw new SemanticError(position, "unexpected return value");
+        }
         if (expr instanceof Number number) {
             model.ir.Return ret = new model.ir.Return("i32", Operand.number(number.getValue()));
             instructions.add(ret);

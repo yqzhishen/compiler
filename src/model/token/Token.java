@@ -36,6 +36,7 @@ public class Token implements IUnit {
             return switch (param) {
                 case "const" -> new Token(TokenType.Const);
                 case "int" -> new Token(TokenType.Int);
+                case "void" -> new Token(TokenType.Void);
                 case "if" -> new Token(TokenType.If);
                 case "else" -> new Token(TokenType.Else);
                 case "while" -> new Token(TokenType.While);

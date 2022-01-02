@@ -50,14 +50,20 @@ public class IfClause extends Sentence {
             instructionsIfFalse = elseBlock.generateIr();
         }
         Label labelPass = new Label(Tagger.newTag());
-        switch (instructionsIfTrue.get(instructionsIfTrue.size() - 1).getType()) {
+        if (instructionsIfTrue.isEmpty()) {
+            instructionsIfTrue.add(new Jump(labelPass));
+        }
+        else switch (instructionsIfTrue.get(instructionsIfTrue.size() - 1).getType()) {
             case Br, Ret -> {}
             default -> instructionsIfTrue.add(new Jump(labelPass));
         }
         Jump jump;
         if (elseBlock != null) {
             jump = new Jump(condition.getResult(), labelIfTrue, labelIfFalse);
-            switch (instructionsIfFalse.get(instructionsIfFalse.size() - 1).getType()) {
+            if (instructionsIfFalse.isEmpty()) {
+                instructionsIfFalse.add(new Jump(labelPass));
+            }
+            else switch (instructionsIfFalse.get(instructionsIfFalse.size() - 1).getType()) {
                 case Br, Ret -> {}
                 default -> instructionsIfFalse.add(new Jump(labelPass));
             }

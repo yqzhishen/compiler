@@ -47,6 +47,9 @@ public class Array extends Symbol {
 
     public static String dumpShape(List<IExpr> shape) {
         StringBuilder builder = new StringBuilder();
+        if (!shape.isEmpty() && ((Number) shape.get(0)).getValue() == -1) {
+            shape = shape.subList(1, shape.size());
+        }
         for (IExpr expr : shape) {
             Number number = (Number) expr;
             builder.append('[').append(number.getValue()).append(" x ");

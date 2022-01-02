@@ -5,10 +5,7 @@ import error.CompileError;
 import error.SemanticError;
 import model.ir.*;
 import model.ir.Compare.CmpType;
-import model.symbol.Const;
-import model.symbol.Symbol;
-import model.symbol.SymbolType;
-import model.symbol.Variable;
+import model.symbol.*;
 import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
@@ -76,6 +73,9 @@ public class CmpCond extends Cond {
                     operands[i] = Operand.local(Tagger.newTag());
                     Load load = new Load("i32", operands[i], "i32*", variable.getAddress());
                     instructions.add(load);
+                }
+                else if (symbol instanceof Array array) {
+                    throw new SemanticError(ident.getPos(), "expected index for array '" + array.getIdent().getName() + '\'');
                 }
             }
             else if (subExpr instanceof Expr expression) {

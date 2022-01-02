@@ -4,12 +4,15 @@ import error.CompileError;
 import lexer.Lexer;
 import model.symbol.Function;
 import model.token.Ident;
+import model.unit.Argument;
 import model.unit.CompUnit;
 import parser.SyntaxParser;
 import reader.CompileReader;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 public class Compiler {
 
@@ -20,10 +23,32 @@ public class Compiler {
         FileWriter writer = null;
         try {
             SymTable table = SymTable.getInstance();
-            table.put(new Function(new Ident("getint"), 0, false));
-            table.put(new Function(new Ident("putint"), 1, true));
-            table.put(new Function(new Ident("getch"), 0, false));
-            table.put(new Function(new Ident("putch"), 1, true));
+            table.put(new Function(
+                    false,
+                    new Ident("getint"),
+                    Collections.emptyList()));
+            table.put(new Function(
+                    true,
+                    new Ident("putint"),
+                    List.of(new Argument(false))));
+            table.put(new Function(
+                    false,
+                    new Ident("getch"),
+                    Collections.emptyList()));
+            table.put(new Function(
+                    true,
+                    new Ident("putch"),
+                    List.of(new Argument(false))));
+            table.put(new Function(
+                    false,
+                    new Ident("getarray"),
+                    List.of(new Argument(true))));
+            table.put(new Function(
+                    true,
+                    new Ident("putarray"),
+                    List.of(
+                            new Argument(false),
+                            new Argument(true))));
             CompUnit compUnit = parser.parse();
             if (Lexer.getLexer().getToken() != null)
                 System.exit(1);
@@ -33,7 +58,10 @@ public class Compiler {
                             declare void @putint(i32)
                             declare i32 @getch()
                             declare void @putch(i32)
+                            declare int @getarray(i32*)
+                            declare void @putarray(i32, i32*)
                             declare void @memset(i32*, i32, i32)
+                            
                             """);
             writer.write(SemanticAnalyzer.getAnalyzer().dump(compUnit));
             writer.flush();

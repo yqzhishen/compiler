@@ -65,7 +65,10 @@ public class ConstDecl extends Declare {
             else if (symbol instanceof Array array) {
                 List<IExpr> shape = array.getShape();
                 for (int i = 0; i < shape.size(); ++i) {
-                    shape.set(i, new Number(shape.get(i).calculate()));
+                    int size = shape.get(i).calculate();
+                    if (size < 0)
+                        throw new SemanticError(array.getIdent().getPos(), "array size must not be negative");
+                    shape.set(i, new Number(size));
                 }
                 String shapeToString = array.getShapeToString();
                 Operand address = Operand.local(Tagger.newTag());
@@ -106,7 +109,7 @@ public class ConstDecl extends Declare {
         if (initializers.size() > length) {
             throw new IllegalStateException();
         }
-        int step = size / length;
+        int step = length == 0 ? 0 : size / length;
         for (int index = 0; index < length && index < initializers.size(); ++index) {
             if (shape.size() == 1) {
                 Operand target = Operand.local(Tagger.newTag());

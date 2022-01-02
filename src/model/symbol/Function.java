@@ -1,21 +1,24 @@
 package model.symbol;
 
 import model.token.Ident;
+import model.unit.Argument;
+
+import java.util.List;
 
 public class Function extends Symbol {
 
-    private final int schema;
-
     private final boolean isVoid;
 
-    public Function(Ident ident, int schema, boolean isVoid) {
+    private final List<Argument> arguments;
+
+    public Function(boolean isVoid, Ident ident, List<Argument> arguments) {
         super(ident);
-        this.schema = schema;
+        this.arguments = arguments;
         this.isVoid = isVoid;
     }
 
-    public int getSchema() {
-        return this.schema;
+    public List<Argument> getArguments() {
+        return arguments;
     }
 
     public boolean isVoid() {

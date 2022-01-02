@@ -11,6 +11,10 @@ import java.util.List;
 
 public class Block extends Sentence {
 
+    private final List<Sentence> sentences;
+
+    private boolean isFuncBlock;
+
     public Block() {
         this.sentences = new ArrayList<>();
     }
@@ -20,7 +24,10 @@ public class Block extends Sentence {
         this.sentences.add(singleSentence);
     }
 
-    private final List<Sentence> sentences;
+    public Block(boolean isFuncBlock) {
+        this.sentences = new ArrayList<>();
+        this.isFuncBlock = isFuncBlock;
+    }
 
     @Override
     public Block build() throws IOException, CompileError {
@@ -34,11 +41,15 @@ public class Block extends Sentence {
 
     public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
-        this.table.pushLayer();
+        if (!isFuncBlock) {
+            this.table.pushLayer();
+        }
         for (Sentence sentence : sentences) {
             instructions.addAll(sentence.generateIr());
         }
-        this.table.popLayer();
+        if (!isFuncBlock) {
+            this.table.popLayer();
+        }
         return instructions;
     }
 

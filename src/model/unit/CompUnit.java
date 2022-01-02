@@ -6,8 +6,11 @@ import model.token.TokenType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class CompUnit extends AbstractUnit {
+
+    public static boolean hasMain;
 
     private final List<GlobalDef> globalDefs = new ArrayList<>();
 
@@ -23,7 +26,9 @@ public class CompUnit extends AbstractUnit {
                 break;
             this.globalDefs.add(new GlobalDef().build());
         }
-        this.funcDefs.add(new FuncDef().build());
+        while (lexer.nextType() != null) {
+            this.funcDefs.add(new FuncDef().build());
+        }
         return this;
     }
 
@@ -32,8 +37,16 @@ public class CompUnit extends AbstractUnit {
         for (GlobalDef globalDef : this.globalDefs) {
             builder.append(globalDef.generateCode());
         }
+        if (!globalDefs.isEmpty()) {
+            builder.append('\n');
+        }
+        StringJoiner funcJoiner = new StringJoiner("\n");
         for (FuncDef funcDef : this.funcDefs) {
-            builder.append(funcDef.generateCode());
+            funcJoiner.add(funcDef.generateCode());
+        }
+        builder.append(funcJoiner);
+        if (!hasMain) {
+            throw new CompileError("Missing 'main' function");
         }
         return builder.toString();
     }

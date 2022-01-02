@@ -117,7 +117,10 @@ public class GlobalDef extends AbstractUnit {
     private String dumpArray(Array array, String tag) throws CompileError {
         List<IExpr> shape = array.getShape();
         for (int i = 0; i < shape.size(); ++i) {
-            shape.set(i, new Number(shape.get(i).calculate()));
+            int size = shape.get(i).calculate();
+            if (size < 0)
+                throw new SemanticError(array.getIdent().getPos(), "array size must not be negative");
+            shape.set(i, new Number(size));
         }
         ArrayInitializer initializer = array.getInitializer();
         broadcastInitializer(shape, initializer);

@@ -11,6 +11,11 @@ public class Return extends Instruction {
         this.returned = returned;
     }
 
+    public Return() {
+        this.returnType = null;
+        this.returned = null;
+    }
+
     @Override
     public InstructionType getType() {
         return InstructionType.Ret;
@@ -18,6 +23,9 @@ public class Return extends Instruction {
 
     @Override
     public String toString() {
+        if (returned == null) {
+            return "ret void";
+        }
         return "ret " + returnType + " " + returned;
     }
 }

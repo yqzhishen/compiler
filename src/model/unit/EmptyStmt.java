@@ -16,4 +16,5 @@ public class EmptyStmt extends Sentence {
     public List<Instruction> generateIr() {
         return Collections.emptyList();
     }
+
 }

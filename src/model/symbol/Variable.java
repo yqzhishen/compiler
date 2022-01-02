@@ -15,6 +15,12 @@ public class Variable extends Symbol {
         this.expr = expr;
     }
 
+    public Variable(Ident ident, Operand address) {
+        super(ident);
+        this.expr = null;
+        this.address = address;
+    }
+
     public IExpr getExpr() {
         return expr;
     }
