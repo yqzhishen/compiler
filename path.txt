@@ -55,6 +55,7 @@
 ./src/model/unit/IArrayInitializer.java
 ./src/model/unit/IExpr.java
 ./src/model/unit/IfClause.java
+./src/model/unit/IMetaUnit.java
 ./src/model/unit/IUnit.java
 ./src/model/unit/LoopJump.java
 ./src/model/unit/MulExpr.java
