@@ -9,6 +9,7 @@ import model.unit.CompUnit;
 import parser.SyntaxParser;
 import reader.CompileReader;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
@@ -17,6 +18,15 @@ import java.util.List;
 public class Compiler {
 
     public static void main(String[] args) throws IOException {
+        if (args.length == 3 && args[2].equals("--print")) {
+            FileReader reader = new FileReader(args[0]);
+            int c = reader.read();
+            while (c != -1) {
+                System.out.print((char) c);
+                c = reader.read();
+            }
+            return;
+        }
         CompileReader reader = new CompileReader(args[0]);
         Lexer.setReader(reader);
         SyntaxParser parser = SyntaxParser.getParser();
