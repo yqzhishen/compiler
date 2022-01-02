@@ -81,9 +81,14 @@ public class FuncCall extends Expr implements IExpr {
                             throw new SemanticError(this.ident.getPos(), String.format("incompatible shape (required %d, got %d)", argDim, paramDim));
                         }
                     }
-                    Operand pointer = Operand.local(Tagger.newTag());
-                    instructions.add(new GetElementPtr(pointer, array.getShapeToString(), array.getAddress(), List.of(Operand.number(0), Operand.number(0))));
-                    params.add(new Param(Array.dumpShape(argShape) + "*", pointer));
+                    if (((Number) paramShape.get(0)).getValue() != -1) {
+                        Operand pointer = Operand.local(Tagger.newTag());
+                        instructions.add(new GetElementPtr(pointer, array.getShapeToString(), array.getAddress(), List.of(Operand.number(0), Operand.number(0))));
+                        params.add(new Param(Array.dumpShape(argShape) + "*", pointer));
+                    }
+                    else {
+                        params.add(new Param(Array.dumpShape(argShape) + "*", array.getAddress()));
+                    }
                 }
                 else {
                     if (argument.isPointer()) {

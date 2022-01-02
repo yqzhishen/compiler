@@ -106,8 +106,13 @@ public class FuncDef extends AbstractUnit {
             }
         }
         instructions.addAll(funcBlock.generateIr());
-        if (isVoid && (instructions.isEmpty() || !instructions.get(instructions.size() - 1).getType().equals(InstructionType.Ret))) {
-            instructions.add(new Return());
+        if (instructions.isEmpty() || !instructions.get(instructions.size() - 1).getType().equals(InstructionType.Ret)) {
+            if (isVoid) {
+                instructions.add(new Return());
+            }
+            else {
+                instructions.add(new Return("i32", Operand.number(0)));
+            }
         }
         instructions.forEach(instruction -> blockJoiner.add(instruction.toString()));
         builder.append(blockJoiner).append("}\n");
