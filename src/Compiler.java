@@ -58,7 +58,7 @@ public class Compiler {
                             declare void @putint(i32)
                             declare i32 @getch()
                             declare void @putch(i32)
-                            declare int @getarray(i32*)
+                            declare i32 @getarray(i32*)
                             declare void @putarray(i32, i32*)
                             declare void @memset(i32*, i32, i32)
                             
