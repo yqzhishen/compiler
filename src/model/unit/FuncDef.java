@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
-public class FuncDef extends AbstractUnit {
+public class FuncDef extends AbstractUnit implements IMetaUnit {
 
     public static boolean inVoidFunction;
 
@@ -54,6 +54,7 @@ public class FuncDef extends AbstractUnit {
         return this;
     }
 
+    @Override
     public String generateCode() throws CompileError {
         FuncDef.inVoidFunction = this.isVoid;
         if (ident.getName().equals("main")) {
@@ -119,6 +120,11 @@ public class FuncDef extends AbstractUnit {
         table.popLayer();
         Tagger.reset();
         return builder.toString();
+    }
+
+    @Override
+    public boolean isFunction() {
+        return true;
     }
 
 }

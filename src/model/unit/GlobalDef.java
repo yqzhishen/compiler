@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
-public class GlobalDef extends AbstractUnit {
+public class GlobalDef extends AbstractUnit implements IMetaUnit {
 
     private boolean isConst = false;
 
@@ -83,6 +83,7 @@ public class GlobalDef extends AbstractUnit {
         }
     }
 
+    @Override
     public String generateCode() throws CompileError {
         SymTable table = SymTable.getInstance();
         StringBuilder builder = new StringBuilder();
@@ -174,6 +175,11 @@ public class GlobalDef extends AbstractUnit {
         }
         builder.append(joiner);
         return builder.toString();
+    }
+
+    @Override
+    public boolean isFunction() {
+        return false;
     }
 
 }

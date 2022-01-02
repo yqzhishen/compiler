@@ -6,45 +6,40 @@ import model.token.TokenType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 
 public class CompUnit extends AbstractUnit {
 
     public static boolean hasMain;
 
-    private final List<GlobalDef> globalDefs = new ArrayList<>();
-
-    private final List<FuncDef> funcDefs = new ArrayList<>();
+    private final List<IMetaUnit> metaUnits = new ArrayList<>();
 
     @Override
     public CompUnit build() throws IOException, CompileError {
-        while (true) {
-            if (TokenType.Const.equals(lexer.nextType())) {
-                this.globalDefs.add(new GlobalDef().build());
-            }
-            if (TokenType.LPar.equals(lexer.nextType(2)))
-                break;
-            this.globalDefs.add(new GlobalDef().build());
-        }
         while (lexer.nextType() != null) {
-            this.funcDefs.add(new FuncDef().build());
+            if (TokenType.Const.equals(lexer.nextType())) {
+                this.metaUnits.add(new GlobalDef().build());
+            }
+            else if (TokenType.LPar.equals(lexer.nextType(2))) {
+                this.metaUnits.add(new FuncDef().build());
+            }
+            else {
+                this.metaUnits.add(new GlobalDef().build());
+            }
         }
         return this;
     }
 
     public String generateCode() throws CompileError {
         StringBuilder builder = new StringBuilder();
-        for (GlobalDef globalDef : this.globalDefs) {
-            builder.append(globalDef.generateCode());
+        if (!this.metaUnits.isEmpty()) {
+            builder.append(metaUnits.get(0).generateCode());
         }
-        if (!globalDefs.isEmpty()) {
-            builder.append('\n');
+        for (int i = 1; i < this.metaUnits.size(); ++i) {
+            if (metaUnits.get(i - 1).isFunction() || metaUnits.get(i).isFunction()) {
+                builder.append('\n');
+            }
+            builder.append(metaUnits.get(i).generateCode());
         }
-        StringJoiner funcJoiner = new StringJoiner("\n");
-        for (FuncDef funcDef : this.funcDefs) {
-            funcJoiner.add(funcDef.generateCode());
-        }
-        builder.append(funcJoiner);
         if (!hasMain) {
             throw new CompileError("Missing 'main' function");
         }

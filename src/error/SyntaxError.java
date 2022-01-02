@@ -22,13 +22,13 @@ public class SyntaxError extends CompileError {
     @Override
     public String getMessage() {
         StringBuilder builder = new StringBuilder("Syntax error at ").append(this.pos).append(": expected ");
-        StringJoiner exp = new StringJoiner("> | <", "<", ">");
+        StringJoiner exp = new StringJoiner("] | [", "[", "]");
         for (TokenType type : this.expected) {
             exp.add(type.name());
         }
         builder.append(exp);
         if (this.got != null) {
-            builder.append(", got <").append(got.name()).append("> instead");
+            builder.append(", got [").append(got.name()).append("]");
         }
         return builder.toString();
     }
