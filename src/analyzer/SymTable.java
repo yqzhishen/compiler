@@ -17,7 +17,7 @@ public class SymTable {
         return table;
     }
 
-    private final Stack<Map<String, Symbol>> valTable = new Stack<>();
+    private final Stack<Map<String, Symbol>> varTable = new Stack<>();
 
     private final Map<String, Symbol> funcTable = new HashMap<>();
 
@@ -26,11 +26,11 @@ public class SymTable {
     }
 
     public void pushLayer() {
-        valTable.push(new HashMap<>());
+        varTable.push(new HashMap<>());
     }
 
     public void popLayer() {
-        valTable.pop();
+        varTable.pop();
     }
 
     public void put(Symbol symbol) throws SemanticError {
@@ -39,7 +39,7 @@ public class SymTable {
             if (this.funcTable.put(name, symbol) != null)
                 throw new SemanticError(symbol.getIdent().getPos(), "function '" + name + "' already defined");
         }
-        else if (this.valTable.peek().put(name, symbol) != null)
+        else if (this.varTable.peek().put(name, symbol) != null)
             throw new SemanticError(symbol.getIdent().getPos(), "symbol '" + name + "' already defined");
     }
 
@@ -47,8 +47,8 @@ public class SymTable {
         String name = ident.getName();
         switch (type) {
             case Const, Variable, Array -> {
-                for (int i = this.valTable.size() - 1; i >= 0; --i) {
-                    Symbol symbol = this.valTable.get(i).get(name);
+                for (int i = this.varTable.size() - 1; i >= 0; --i) {
+                    Symbol symbol = this.varTable.get(i).get(name);
                     if (symbol == null)
                         continue;
                     if (type.equals(SymbolType.Const) && !type.equals(symbol.getType()))
