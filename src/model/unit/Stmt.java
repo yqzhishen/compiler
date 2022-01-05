@@ -14,7 +14,6 @@ import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class Stmt extends Sentence {
     }
 
     @Override
-    public Stmt build() throws CompileError, IOException {
+    public Stmt build() throws CompileError {
         TokenType type = this.lexer.nextType();
         switch (type) {
             case Add, Sub, LPar, Number -> {

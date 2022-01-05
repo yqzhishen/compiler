@@ -9,7 +9,6 @@ import model.ir.Operate;
 import model.ir.Operate.OpType;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class Cond extends AbstractUnit implements IExpr {
     }
 
     @Override
-    public IExpr build() throws IOException, CompileError {
+    public IExpr build() throws CompileError {
         return new OrCond().build();
     }
 

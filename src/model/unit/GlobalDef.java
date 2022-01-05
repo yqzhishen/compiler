@@ -12,7 +12,6 @@ import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -28,7 +27,7 @@ public class GlobalDef extends AbstractUnit implements IMetaUnit {
     }
 
     @Override
-    public GlobalDef build() throws IOException, CompileError {
+    public GlobalDef build() throws CompileError {
         if (TokenType.Const.equals(lexer.nextType())) {
             this.isConst = true;
             lexer.getToken();
@@ -43,7 +42,7 @@ public class GlobalDef extends AbstractUnit implements IMetaUnit {
         return this;
     }
 
-    private Symbol buildInitializer() throws IOException, CompileError {
+    private Symbol buildInitializer() throws CompileError {
         Ident ident = (Ident) this.require(TokenType.Ident);
         boolean isArray = TokenType.LBracket.equals(lexer.nextType());
         IExpr expr = null;

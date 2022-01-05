@@ -3,12 +3,10 @@ package model.unit;
 import error.CompileError;
 import model.token.TokenType;
 
-import java.io.IOException;
-
 public class AddExpr extends Expr {
 
     @Override
-    public IExpr build() throws CompileError, IOException {
+    public IExpr build() throws CompileError {
         this.elements[0] = new MulExpr().build();
         boolean finished = false;
         while (!finished) {

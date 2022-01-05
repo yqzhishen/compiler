@@ -10,7 +10,6 @@ import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class FuncCall extends Expr implements IExpr {
     }
 
     @Override
-    public IExpr build() throws IOException, CompileError {
+    public IExpr build() throws CompileError {
         this.ident = (Ident) this.require(TokenType.Ident);
         this.require(TokenType.LPar);
         if (!TokenType.RPar.equals(this.lexer.nextType())) {

@@ -8,7 +8,13 @@ public class LexicalError extends CompileError {
 
     private int got;
 
+    private String message;
+
     public LexicalError() { }
+
+    public LexicalError(String message) {
+        this.message = message;
+    }
 
     public LexicalError(FilePosition pos, int got) {
         this.setParam(pos, got);
@@ -21,6 +27,8 @@ public class LexicalError extends CompileError {
 
     @Override
     public String getMessage() {
+        if (this.message != null)
+            return "Unknown I/O exception: " + this.message;
         if (this.got == -1) {
             return "Lexical error at " + this.pos + ": unexpected end of file";
         }

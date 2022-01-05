@@ -9,7 +9,6 @@ import model.ir.Label;
 import model.token.Token;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class LoopJump extends Sentence {
     private Token token;
 
     @Override
-    public LoopJump build() throws IOException, CompileError {
+    public LoopJump build() throws CompileError {
         this.token = this.require(TokenType.Continue, TokenType.Break);
         this.require(TokenType.Semicolon);
         return this;

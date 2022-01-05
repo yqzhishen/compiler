@@ -5,8 +5,6 @@ import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
 
-import java.io.IOException;
-
 public class Term extends Expr {
 
     private boolean bool;
@@ -22,7 +20,7 @@ public class Term extends Expr {
     }
 
     @Override
-    public IExpr build() throws CompileError, IOException {
+    public IExpr build() throws CompileError {
         this.buildUnaryOp();
         if (inverted) {
             Term term = new Term(true);
@@ -58,7 +56,7 @@ public class Term extends Expr {
         return expr;
     }
 
-    private void buildUnaryOp() throws CompileError, IOException {
+    private void buildUnaryOp() throws CompileError {
         TokenType nextType = this.lexer.nextType();
         boolean stop = false;
         while (!stop && nextType != null) {

@@ -6,16 +6,14 @@ import lexer.Lexer;
 import model.token.Token;
 import model.token.TokenType;
 
-import java.io.IOException;
-
 public abstract class AbstractUnit implements IUnit {
 
     protected final Lexer lexer = Lexer.getLexer();
 
     @Override
-    public abstract IUnit build() throws IOException, CompileError;
+    public abstract IUnit build() throws CompileError;
 
-    protected Token require(TokenType ... types) throws IOException, CompileError {
+    protected Token require(TokenType ... types) throws CompileError {
         Token token = this.lexer.getToken();
         if (token == null)
             throw new SyntaxError(Lexer.getReader().getPos(), types, null);

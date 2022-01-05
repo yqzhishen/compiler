@@ -3,7 +3,6 @@ package model.unit;
 import error.CompileError;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,7 @@ public class CompUnit extends AbstractUnit {
     private final List<IMetaUnit> metaUnits = new ArrayList<>();
 
     @Override
-    public CompUnit build() throws IOException, CompileError {
+    public CompUnit build() throws CompileError {
         while (lexer.nextType() != null) {
             if (TokenType.Const.equals(lexer.nextType())) {
                 this.metaUnits.add(new GlobalDef().build());

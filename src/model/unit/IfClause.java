@@ -7,7 +7,6 @@ import model.ir.Jump;
 import model.ir.Label;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class IfClause extends Sentence {
     private Block elseBlock;
 
     @Override
-    public IfClause build() throws IOException, CompileError {
+    public IfClause build() throws CompileError {
         this.require(TokenType.If);
         this.require(TokenType.LPar);
         this.condition = (Cond) new Cond().build();
@@ -82,7 +81,7 @@ public class IfClause extends Sentence {
         return instructions;
     }
 
-    private Block buildSentence() throws CompileError, IOException {
+    private Block buildSentence() throws CompileError {
         if (TokenType.LBrace.equals(this.lexer.nextType())) {
             return new Block().build();
         }

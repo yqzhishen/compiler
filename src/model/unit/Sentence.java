@@ -5,7 +5,6 @@ import error.CompileError;
 import model.ir.Instruction;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.List;
 
 public class Sentence extends AbstractUnit {
@@ -13,7 +12,7 @@ public class Sentence extends AbstractUnit {
     protected SymTable table = SymTable.getInstance();
 
     @Override
-    public Sentence build() throws IOException, CompileError {
+    public Sentence build() throws CompileError {
         TokenType type = this.lexer.nextType();
         if (type != null) {
             switch (type) {

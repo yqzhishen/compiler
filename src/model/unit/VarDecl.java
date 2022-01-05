@@ -9,14 +9,13 @@ import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VarDecl extends Declare {
 
     @Override
-    public VarDecl build() throws IOException, CompileError {
+    public VarDecl build() throws CompileError {
         this.require(TokenType.Int);
         this.symbols.add(this.buildInitializer());
         while (!TokenType.Semicolon.equals(this.lexer.nextType())) {
@@ -27,7 +26,7 @@ public class VarDecl extends Declare {
         return this;
     }
 
-    private Symbol buildInitializer() throws IOException, CompileError {
+    private Symbol buildInitializer() throws CompileError {
         Ident ident = (Ident) this.require(TokenType.Ident);
         boolean isArray = TokenType.LBracket.equals(lexer.nextType());
         IExpr expr = null;

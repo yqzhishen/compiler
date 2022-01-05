@@ -11,7 +11,6 @@ import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class Expr extends AbstractUnit implements IExpr {
     }
 
     @Override
-    public IExpr build() throws IOException, CompileError {
+    public IExpr build() throws CompileError {
         return new AddExpr().build();
     }
 

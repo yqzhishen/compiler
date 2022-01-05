@@ -1,5 +1,6 @@
 package lexer;
 
+import error.CompileError;
 import error.LexicalError;
 import lexer.automaton.Automaton;
 import model.token.Token;
@@ -39,56 +40,60 @@ public class Lexer {
 
     private final LexicalError error = new LexicalError();
 
-    private Token readToken() throws LexicalError, IOException {
-        int c = reader.read();
-        while (c != -1) {
-            if (this.automaton.isEmpty())
-                this.pos = reader.getPos().copy();
-            char ch = (char) c;
-            if (!this.automaton.push(ch)) {
-                this.error.setParam(reader.getPos().copy(), ch);
-                reader.unread(c);
-                Token token = null;
-                while (!this.automaton.isEmpty()) {
-                    token = this.automaton.getToken();
-                    if (token != null)
-                        break;
-                    reader.unread(this.automaton.pop());
-                }
+    private Token readToken() throws LexicalError {
+        try {
+            int c = reader.read();
+            while (c != -1) {
                 if (this.automaton.isEmpty())
-                    throw this.error;
-                if (token != null) {
-                    this.automaton.reset();
-                    if (!token.getType().equals(TokenType.Comment))
-                        return token.setPos(this.pos);
+                    this.pos = reader.getPos().copy();
+                char ch = (char) c;
+                if (!this.automaton.push(ch)) {
+                    this.error.setParam(reader.getPos().copy(), ch);
+                    reader.unread(c);
+                    Token token = null;
+                    while (!this.automaton.isEmpty()) {
+                        token = this.automaton.getToken();
+                        if (token != null)
+                            break;
+                        reader.unread(this.automaton.pop());
+                    }
+                    if (this.automaton.isEmpty())
+                        throw this.error;
+                    if (token != null) {
+                        this.automaton.reset();
+                        if (!token.getType().equals(TokenType.Comment))
+                            return token.setPos(this.pos);
+                    }
                 }
+                c = reader.read();
             }
-            c = reader.read();
-        }
-        if (!this.automaton.isEmpty()) {
-            Token token = this.automaton.getToken();
-            if (token == null) {
-                this.error.setParam(reader.getPos().copy(), -1);
-                throw this.error;
+            if (!this.automaton.isEmpty()) {
+                Token token = this.automaton.getToken();
+                if (token == null) {
+                    this.error.setParam(reader.getPos().copy(), -1);
+                    throw this.error;
+                }
+                this.automaton.reset();
+                if (!token.getType().equals(TokenType.Comment))
+                    return token.setPos(this.pos);
             }
-            this.automaton.reset();
-            if (!token.getType().equals(TokenType.Comment))
-                return token.setPos(this.pos);
+            return null;
+        } catch (IOException e) {
+            throw new LexicalError(e.getMessage());
         }
-        return null;
     }
 
-    public Token getToken() throws LexicalError, IOException {
+    public Token getToken() throws LexicalError {
         if (!this.buffer.isEmpty())
             return this.buffer.remove(0);
         return this.readToken();
     }
 
-    public TokenType nextType() throws LexicalError, IOException {
+    public TokenType nextType() throws LexicalError {
         return this.nextType(0);
     }
 
-    public TokenType nextType(int ahead) throws LexicalError, IOException {
+    public TokenType nextType(int ahead) throws LexicalError {
         if (ahead < this.buffer.size())
             return this.buffer.get(ahead).getType();
         TokenType type = null;
@@ -102,7 +107,7 @@ public class Lexer {
         return type;
     }
 
-    public static void main(String[] args) throws IOException, LexicalError {
+    public static void main(String[] args) throws CompileError, IOException {
         CompileReader reader = new CompileReader("test/input.c");
         Lexer.setReader(reader);
         Lexer lexer = Lexer.getLexer();

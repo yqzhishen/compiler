@@ -3,7 +3,6 @@ package model.unit;
 import error.CompileError;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class ArrayInitializer extends AbstractUnit implements IArrayInitializer 
     }
 
     @Override
-    public IArrayInitializer build() throws IOException, CompileError {
+    public IArrayInitializer build() throws CompileError {
         if (dimension == 0) {
             return new Expr().build();
         }

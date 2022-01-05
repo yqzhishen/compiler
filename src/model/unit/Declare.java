@@ -5,7 +5,6 @@ import model.ir.Instruction;
 import model.symbol.Symbol;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,7 @@ public class Declare extends Sentence {
     protected List<Symbol> symbols = new ArrayList<>();
 
     @Override
-    public Declare build() throws IOException, CompileError {
+    public Declare build() throws CompileError {
         switch (this.lexer.nextType()) {
             case Const -> {
                 return new ConstDecl().build();

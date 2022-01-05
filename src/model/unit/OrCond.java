@@ -3,12 +3,10 @@ package model.unit;
 import error.CompileError;
 import model.token.TokenType;
 
-import java.io.IOException;
-
 public class OrCond extends Cond {
 
     @Override
-    public IExpr build() throws CompileError, IOException {
+    public IExpr build() throws CompileError {
         this.elements[0] = new AndCond().build();
         boolean finished = false;
         while (!finished) {

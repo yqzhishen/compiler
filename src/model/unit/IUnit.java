@@ -6,6 +6,6 @@ import java.io.IOException;
 
 public interface IUnit {
 
-    IUnit build() throws IOException, CompileError;
+    IUnit build() throws CompileError;
 
 }

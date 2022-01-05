@@ -15,7 +15,6 @@ import model.token.Number;
 import model.token.TokenType;
 import reader.FilePosition;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class Return extends Sentence {
     }
 
     @Override
-    public Return build() throws IOException, CompileError {
+    public Return build() throws CompileError {
         position = this.require(TokenType.Return).getPos();
         if (!TokenType.Semicolon.equals(lexer.nextType())) {
             this.expr = new Expr().build();

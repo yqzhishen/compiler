@@ -6,7 +6,6 @@ import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class Argument extends AbstractUnit {
     }
 
     @Override
-    public Argument build() throws IOException, CompileError {
+    public Argument build() throws CompileError {
         this.require(TokenType.Int);
         ident = (Ident) this.require(TokenType.Ident);
         isPointer = TokenType.LBracket.equals(lexer.nextType());

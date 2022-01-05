@@ -4,8 +4,8 @@ import analyzer.SymTable;
 import analyzer.Tagger;
 import error.CompileError;
 import error.SemanticError;
-import model.ir.*;
 import model.ir.Return;
+import model.ir.*;
 import model.symbol.Array;
 import model.symbol.Function;
 import model.symbol.Variable;
@@ -13,7 +13,6 @@ import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -31,7 +30,7 @@ public class FuncDef extends AbstractUnit implements IMetaUnit {
     private Block funcBlock;
 
     @Override
-    public FuncDef build() throws IOException, CompileError {
+    public FuncDef build() throws CompileError {
         isVoid = this.require(TokenType.Int, TokenType.Void).getType().equals(TokenType.Void);
         ident = (Ident) this.require(TokenType.Ident);
         boolean isMain = ident.getName().equals("main");

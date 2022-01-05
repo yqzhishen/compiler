@@ -12,14 +12,13 @@ import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConstDecl extends Declare {
 
     @Override
-    public ConstDecl build() throws IOException, CompileError {
+    public ConstDecl build() throws CompileError {
         this.require(TokenType.Const);
         this.require(TokenType.Int);
         this.symbols.add(this.buildInitializer());
@@ -31,7 +30,7 @@ public class ConstDecl extends Declare {
         return this;
     }
 
-    private Symbol buildInitializer() throws IOException, CompileError {
+    private Symbol buildInitializer() throws CompileError {
         Ident ident = (Ident) this.require(TokenType.Ident);
         boolean isArray = TokenType.LBracket.equals(lexer.nextType());
         List<IExpr> shape = null;

@@ -10,7 +10,6 @@ import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class CmpCond extends Cond {
     }
 
     @Override
-    public CmpCond build() throws CompileError, IOException {
+    public CmpCond build() throws CompileError {
         this.elements[0] = new Expr().build();
         boolean finished = false;
         while (!finished) {

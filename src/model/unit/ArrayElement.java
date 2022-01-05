@@ -3,13 +3,15 @@ package model.unit;
 import analyzer.Tagger;
 import error.CompileError;
 import error.SemanticError;
-import model.ir.*;
+import model.ir.GetElementPtr;
+import model.ir.Instruction;
+import model.ir.Load;
+import model.ir.Operand;
 import model.symbol.*;
 import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class ArrayElement extends Expr implements IExpr {
     }
 
     @Override
-    public ArrayElement build() throws IOException, CompileError {
+    public ArrayElement build() throws CompileError {
         this.ident = (Ident) this.require(TokenType.Ident);
         do {
             this.require(TokenType.LBracket);

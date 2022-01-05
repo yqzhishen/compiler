@@ -5,7 +5,6 @@ import lexer.Lexer;
 import model.ir.Instruction;
 import model.token.TokenType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class Block extends Sentence {
     }
 
     @Override
-    public Block build() throws IOException, CompileError {
+    public Block build() throws CompileError {
         this.require(TokenType.LBrace);
         while (!TokenType.RBrace.equals(Lexer.getLexer().nextType())) {
             this.sentences.add(new Sentence().build());

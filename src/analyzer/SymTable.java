@@ -1,7 +1,6 @@
 package analyzer;
 
 import error.SemanticError;
-import model.symbol.Array;
 import model.symbol.Symbol;
 import model.symbol.SymbolType;
 import model.token.Ident;
