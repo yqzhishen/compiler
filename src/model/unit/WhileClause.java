@@ -1,6 +1,6 @@
 package model.unit;
 
-import analyzer.LoopStack;
+import analyzer.LoopScope;
 import analyzer.Tagger;
 import error.CompileError;
 import model.ir.Instruction;
@@ -30,7 +30,7 @@ public class WhileClause extends Sentence {
     @Override
     public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
-        LoopStack stack = LoopStack.getInstance();
+        LoopScope stack = LoopScope.getInstance();
         Label head = new Label(Tagger.newTag());
         Label entry = new Label();
         Label tail = new Label();

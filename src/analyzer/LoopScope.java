@@ -4,17 +4,17 @@ import model.ir.Label;
 
 import java.util.Stack;
 
-public class LoopStack {
+public class LoopScope {
 
     private record Scope(Label head, Label tail) { }
 
-    private static final LoopStack stack = new LoopStack();
+    private static final LoopScope scope = new LoopScope();
 
-    public static LoopStack getInstance() {
-        return stack;
+    public static LoopScope getInstance() {
+        return scope;
     }
 
-    private LoopStack() { }
+    private LoopScope() { }
 
     private final Stack<Scope> scopes = new Stack<>();
 

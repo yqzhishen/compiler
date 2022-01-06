@@ -1,6 +1,6 @@
 package model.unit;
 
-import analyzer.LoopStack;
+import analyzer.LoopScope;
 import error.CompileError;
 import error.SemanticError;
 import model.ir.Instruction;
@@ -26,7 +26,7 @@ public class LoopJump extends Sentence {
     @Override
     public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>(1);
-        LoopStack stack = LoopStack.getInstance();
+        LoopScope stack = LoopScope.getInstance();
         switch (token.getType()) {
             case Continue -> {
                 Label head = stack.head();
