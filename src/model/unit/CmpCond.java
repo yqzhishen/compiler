@@ -24,8 +24,8 @@ public class CmpCond extends Cond {
     }
 
     @Override
-    public CmpCond build() throws CompileError {
-        this.elements[0] = new Expr().build();
+    public Cond build() throws CompileError {
+        this.elements[0] = new Expr(true).build();
         boolean finished = false;
         while (!finished) {
             TokenType type = this.lexer.nextType();
@@ -35,12 +35,15 @@ public class CmpCond extends Cond {
                         this.elements[0] = new CmpCond(this.elements[0], this.operator, this.elements[1]);
                     }
                     this.operator = this.lexer.getToken().getType();
-                    this.elements[1] = new Expr().build();
+                    this.elements[1] = new Expr(true).build();
                 }
                 default -> finished = true;
             }
         }
         if (elements[1] == null) {
+            if (elements[0] instanceof Cond cond) {
+                return cond;
+            }
             operator = TokenType.Neq;
             elements[1] = new Number(0);
         }

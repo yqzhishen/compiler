@@ -7,8 +7,6 @@ import model.token.TokenType;
 
 public class Term extends Expr {
 
-    private boolean bool;
-
     private boolean inverted;
 
     private boolean negative;

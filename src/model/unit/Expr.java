@@ -22,9 +22,15 @@ public class Expr extends AbstractUnit implements IExpr {
 
     protected Operand result;
 
+    protected boolean bool;
+
     protected SymTable table = SymTable.getInstance();
 
     public Expr() { }
+
+    public Expr(boolean bool) {
+        this.bool = bool;
+    }
 
     public Expr(IExpr leftExpr, TokenType operator, IExpr rightExpr) {
         this.elements[0] = leftExpr;
@@ -38,7 +44,7 @@ public class Expr extends AbstractUnit implements IExpr {
 
     @Override
     public IExpr build() throws CompileError {
-        return new AddExpr().build();
+        return new AddExpr(bool).build();
     }
 
     public List<Instruction> generateIr() throws CompileError {
