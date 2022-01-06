@@ -1,5 +1,6 @@
 package model.unit;
 
+import analyzer.CondScope;
 import analyzer.LoopScope;
 import analyzer.Tagger;
 import error.CompileError;
@@ -30,14 +31,17 @@ public class WhileClause extends Sentence {
     @Override
     public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
-        LoopScope stack = LoopScope.getInstance();
+        LoopScope loopScope = LoopScope.getInstance();
+        CondScope condScope = CondScope.getInstance();
         Label head = new Label(Tagger.newTag());
         Label entry = new Label();
         Label tail = new Label();
-        stack.pushLayer(head, tail);
+        loopScope.pushLayer(head, tail);
+        condScope.pushPass(entry, tail);
         instructions.add(new Jump(head));
         instructions.add(head);
         instructions.addAll(condition.generateIr());
+        condScope.popPass();
         entry.setTag(Tagger.newTag());
         instructions.add(new Jump(condition.getResult(), entry, tail));
         instructions.add(entry);
@@ -48,7 +52,7 @@ public class WhileClause extends Sentence {
         }
         tail.setTag(Tagger.newTag());
         instructions.add(tail);
-        stack.popLayer();
+        loopScope.popLayer();
         return instructions;
     }
 

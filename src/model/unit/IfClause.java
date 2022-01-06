@@ -1,5 +1,6 @@
 package model.unit;
 
+import analyzer.CondScope;
 import analyzer.Tagger;
 import error.CompileError;
 import model.ir.Instruction;
@@ -39,16 +40,26 @@ public class IfClause extends Sentence {
 
     @Override
     public List<Instruction> generateIr() throws CompileError {
+        CondScope scope = CondScope.getInstance();
+        Label labelIfTrue = new Label();
+        Label labelIfFalse = new Label();
+        Label labelPass = new Label();
+        if (elseBlock != null) {
+            scope.pushPass(labelIfTrue, labelIfFalse);
+        }
+        else {
+            scope.pushPass(labelIfTrue, labelPass);
+        }
         List<Instruction> instructions = new ArrayList<>(condition.generateIr());
-        Label labelIfTrue = new Label(Tagger.newTag());
+        scope.popPass();
+        labelIfTrue.setTag(Tagger.newTag());
         List<Instruction> instructionsIfTrue = ifBlock.generateIr();
-        Label labelIfFalse = null;
         List<Instruction> instructionsIfFalse = new ArrayList<>(0);
         if (elseBlock != null) {
-            labelIfFalse = new Label(Tagger.newTag());
+            labelIfFalse.setTag(Tagger.newTag());
             instructionsIfFalse = elseBlock.generateIr();
         }
-        Label labelPass = new Label(Tagger.newTag());
+        labelPass.setTag(Tagger.newTag());
         if (instructionsIfTrue.isEmpty()) {
             instructionsIfTrue.add(new Jump(labelPass));
         }
