@@ -1,5 +1,6 @@
 ./src/Compiler.java
-./src/analyzer/LoopStack.java
+./src/analyzer/CondScope.java
+./src/analyzer/LoopScope.java
 ./src/analyzer/SemanticAnalyzer.java
 ./src/analyzer/SymTable.java
 ./src/analyzer/Tagger.java
