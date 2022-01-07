@@ -51,7 +51,6 @@ public class IfClause extends Sentence {
             scope.pushPass(labelIfTrue, labelPass);
         }
         List<Instruction> instructions = new ArrayList<>(condition.generateIr());
-        scope.popPass();
         labelIfTrue.setTag(Tagger.newTag());
         List<Instruction> instructionsIfTrue = ifBlock.generateIr();
         List<Instruction> instructionsIfFalse = new ArrayList<>(0);
@@ -67,9 +66,8 @@ public class IfClause extends Sentence {
             case Br, Ret -> {}
             default -> instructionsIfTrue.add(new Jump(labelPass));
         }
-        Jump jump;
+        Jump jump = new Jump(condition.getResult(), scope.pass(!condition.isInverted()), scope.pass(condition.isInverted()));
         if (elseBlock != null) {
-            jump = new Jump(condition.getResult(), labelIfTrue, labelIfFalse);
             if (instructionsIfFalse.isEmpty()) {
                 instructionsIfFalse.add(new Jump(labelPass));
             }
@@ -78,9 +76,7 @@ public class IfClause extends Sentence {
                 default -> instructionsIfFalse.add(new Jump(labelPass));
             }
         }
-        else {
-            jump = new Jump(condition.getResult(), labelIfTrue, labelPass);
-        }
+        scope.popPass();
         instructions.add(jump);
         instructions.add(labelIfTrue);
         instructions.addAll(instructionsIfTrue);

@@ -30,4 +30,9 @@ public class CondScope {
         return result ? labels.peek().labelTrue : labels.peek().labelFalse;
     }
 
+    public void invert() {
+        Scope peek = labels.pop();
+        labels.push(new Scope(peek.labelFalse, peek.labelTrue));
+    }
+
 }

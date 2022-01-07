@@ -41,9 +41,9 @@ public class WhileClause extends Sentence {
         instructions.add(new Jump(head));
         instructions.add(head);
         instructions.addAll(condition.generateIr());
-        condScope.popPass();
         entry.setTag(Tagger.newTag());
-        instructions.add(new Jump(condition.getResult(), entry, tail));
+        instructions.add(new Jump(condition.getResult(), condScope.pass(!condition.isInverted()), condScope.pass(condition.isInverted())));
+        condScope.popPass();
         instructions.add(entry);
         instructions.addAll(loopBlock.generateIr());
         switch (instructions.get(instructions.size() - 1).getType()) {

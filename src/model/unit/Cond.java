@@ -21,7 +21,13 @@ public class Cond extends AbstractUnit implements IExpr {
 
     protected Operand result;
 
+    protected boolean inverted;
+
     protected SymTable table = SymTable.getInstance();
+
+    public boolean isInverted() {
+        return inverted;
+    }
 
     public Operand getResult() {
         return result;
@@ -51,20 +57,14 @@ public class Cond extends AbstractUnit implements IExpr {
             scope.pushPass(scope.pass(true), next);
         }
         List<Instruction> instructions = new ArrayList<>(subCond.generateIr());
-        scope.popPass();
         next.setTag(Tagger.newTag());
-        Jump jump;
-        Operand result = subCond.getResult();
-        if (operator.equals(TokenType.And)) {
-            jump = new Jump(result, next, scope.pass(false));
-        }
-        else {
-            jump = new Jump(result, scope.pass(true), next);
-        }
+        Jump jump = new Jump(subCond.getResult(), scope.pass(!subCond.isInverted()), scope.pass(subCond.isInverted()));
+        scope.popPass();
         instructions.add(jump);
         instructions.add(next);
         subCond = (Cond) elements[1];
         instructions.addAll(subCond.generateIr());
+        this.inverted = subCond.isInverted();
         this.result = subCond.getResult();
         return instructions;
     }

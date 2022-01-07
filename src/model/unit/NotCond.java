@@ -1,5 +1,6 @@
 package model.unit;
 
+import analyzer.CondScope;
 import analyzer.Tagger;
 import error.CompileError;
 import error.SemanticError;
@@ -22,21 +23,20 @@ public class NotCond extends Cond {
         this.expr = expr;
     }
 
-    public IExpr getExpr() {
-        return expr;
+    @Override
+    public boolean isInverted() {
+        return expr instanceof Cond;
     }
 
     @Override
     public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
         if (expr instanceof Cond condition) {
+            CondScope scope = CondScope.getInstance();
+            scope.invert();
             instructions.addAll(condition.generateIr());
-            Operand result = Operand.local(Tagger.newTag());
-            Operate operate = new Operate("i1", result, Operate.OpType.Xor,
-                    condition.getResult(),
-                    Operand.number(1));
-            this.result = result;
-            instructions.add(operate);
+            scope.invert();
+            this.result = condition.getResult();
         }
         else if (expr instanceof Number number) {
             Operand result = Operand.local(Tagger.newTag());

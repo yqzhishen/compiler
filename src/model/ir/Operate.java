@@ -8,10 +8,7 @@ public class Operate extends Instruction {
         Sub("sub"),
         Mul("mul"),
         Div("sdiv"),
-        Mod("srem"),
-        And("and"),
-        Or("or"),
-        Xor("xor");
+        Mod("srem");
 
         private final String name;
 
