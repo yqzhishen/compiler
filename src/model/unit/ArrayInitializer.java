@@ -58,4 +58,5 @@ public class ArrayInitializer extends AbstractUnit implements IArrayInitializer 
     public List<IArrayInitializer> initializersOfThisDimension() {
         return initializers;
     }
+
 }
