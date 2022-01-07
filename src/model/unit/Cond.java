@@ -51,10 +51,10 @@ public class Cond extends AbstractUnit implements IExpr {
             scope.pushPass(scope.pass(true), next);
         }
         List<Instruction> instructions = new ArrayList<>(subCond.generateIr());
-        Operand result = subCond.getResult();
         scope.popPass();
         next.setTag(Tagger.newTag());
         Jump jump;
+        Operand result = subCond.getResult();
         if (operator.equals(TokenType.And)) {
             jump = new Jump(result, next, scope.pass(false));
         }
@@ -65,8 +65,7 @@ public class Cond extends AbstractUnit implements IExpr {
         instructions.add(next);
         subCond = (Cond) elements[1];
         instructions.addAll(subCond.generateIr());
-        result = subCond.getResult();
-        this.result = result;
+        this.result = subCond.getResult();
         return instructions;
     }
 
