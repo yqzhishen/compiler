@@ -6,10 +6,7 @@ import error.SemanticError;
 import model.ir.Instruction;
 import model.ir.Load;
 import model.ir.Operand;
-import model.symbol.Const;
-import model.symbol.Symbol;
-import model.symbol.SymbolType;
-import model.symbol.Variable;
+import model.symbol.*;
 import model.token.Ident;
 import model.token.Number;
 import model.token.TokenType;
@@ -67,6 +64,9 @@ public class Return extends Sentence {
                 model.ir.Return ret = new model.ir.Return("i32", tmp);
                 instructions.add(load);
                 instructions.add(ret);
+            }
+            else {
+                throw new SemanticError(ident.getPos(), "incompatible type (required value, got pointer)");
             }
         }
         else if (expr instanceof Expr expression) {
