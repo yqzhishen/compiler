@@ -1,6 +1,6 @@
 package model.unit;
 
-import analyzer.CondScope;
+import analyzer.CondFlow;
 import analyzer.SymTable;
 import analyzer.Tagger;
 import error.CompileError;
@@ -47,19 +47,19 @@ public class Cond extends AbstractUnit implements IExpr {
     }
 
     public List<Instruction> generateIr() throws CompileError {
-        CondScope scope = CondScope.getInstance();
+        CondFlow flow = CondFlow.getInstance();
         Cond subCond = (Cond) elements[0];
         Label next = new Label();
         if (operator.equals(TokenType.And)) {
-            scope.pushPass(next, scope.pass(false));
+            flow.push(next, flow.pass(false));
         }
         else {
-            scope.pushPass(scope.pass(true), next);
+            flow.push(flow.pass(true), next);
         }
         List<Instruction> instructions = new ArrayList<>(subCond.generateIr());
         next.setTag(Tagger.newTag());
-        Jump jump = new Jump(subCond.getResult(), scope.pass(!subCond.isInverted()), scope.pass(subCond.isInverted()));
-        scope.popPass();
+        Jump jump = new Jump(subCond.getResult(), flow.pass(!subCond.isInverted()), flow.pass(subCond.isInverted()));
+        flow.pop();
         instructions.add(jump);
         instructions.add(next);
         subCond = (Cond) elements[1];

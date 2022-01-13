@@ -1,6 +1,6 @@
 package model.unit;
 
-import analyzer.CondScope;
+import analyzer.CondFlow;
 import analyzer.Tagger;
 import error.CompileError;
 import error.SemanticError;
@@ -32,10 +32,10 @@ public class NotCond extends Cond {
     public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
         if (expr instanceof Cond condition) {
-            CondScope scope = CondScope.getInstance();
-            scope.invert();
+            CondFlow flow = CondFlow.getInstance();
+            flow.invert();
             instructions.addAll(condition.generateIr());
-            scope.invert();
+            flow.invert();
             this.result = condition.getResult();
         }
         else if (expr instanceof Number number) {

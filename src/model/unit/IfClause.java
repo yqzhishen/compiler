@@ -1,6 +1,6 @@
 package model.unit;
 
-import analyzer.CondScope;
+import analyzer.CondFlow;
 import analyzer.Tagger;
 import error.CompileError;
 import model.ir.Instruction;
@@ -40,15 +40,15 @@ public class IfClause extends Sentence {
 
     @Override
     public List<Instruction> generateIr() throws CompileError {
-        CondScope scope = CondScope.getInstance();
+        CondFlow flow = CondFlow.getInstance();
         Label labelIfTrue = new Label();
         Label labelIfFalse = new Label();
         Label labelPass = new Label();
         if (elseBlock != null) {
-            scope.pushPass(labelIfTrue, labelIfFalse);
+            flow.push(labelIfTrue, labelIfFalse);
         }
         else {
-            scope.pushPass(labelIfTrue, labelPass);
+            flow.push(labelIfTrue, labelPass);
         }
         List<Instruction> instructions = new ArrayList<>(condition.generateIr());
         labelIfTrue.setTag(Tagger.newTag());
@@ -66,7 +66,7 @@ public class IfClause extends Sentence {
             case Br, Ret -> {}
             default -> instructionsIfTrue.add(new Jump(labelPass));
         }
-        Jump jump = new Jump(condition.getResult(), scope.pass(!condition.isInverted()), scope.pass(condition.isInverted()));
+        Jump jump = new Jump(condition.getResult(), flow.pass(!condition.isInverted()), flow.pass(condition.isInverted()));
         if (elseBlock != null) {
             if (instructionsIfFalse.isEmpty()) {
                 instructionsIfFalse.add(new Jump(labelPass));
@@ -76,7 +76,7 @@ public class IfClause extends Sentence {
                 default -> instructionsIfFalse.add(new Jump(labelPass));
             }
         }
-        scope.popPass();
+        flow.pop();
         instructions.add(jump);
         instructions.add(labelIfTrue);
         instructions.addAll(instructionsIfTrue);

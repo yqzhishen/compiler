@@ -1,6 +1,6 @@
 package model.unit;
 
-import analyzer.CondScope;
+import analyzer.CondFlow;
 import analyzer.LoopScope;
 import analyzer.Tagger;
 import error.CompileError;
@@ -31,19 +31,19 @@ public class WhileClause extends Sentence {
     @Override
     public List<Instruction> generateIr() throws CompileError {
         List<Instruction> instructions = new ArrayList<>();
-        LoopScope loopScope = LoopScope.getInstance();
-        CondScope condScope = CondScope.getInstance();
+        LoopScope scope = LoopScope.getInstance();
+        CondFlow flow = CondFlow.getInstance();
         Label head = new Label(Tagger.newTag());
         Label entry = new Label();
         Label tail = new Label();
-        loopScope.pushLayer(head, tail);
-        condScope.pushPass(entry, tail);
+        scope.pushLayer(head, tail);
+        flow.push(entry, tail);
         instructions.add(new Jump(head));
         instructions.add(head);
         instructions.addAll(condition.generateIr());
         entry.setTag(Tagger.newTag());
-        instructions.add(new Jump(condition.getResult(), condScope.pass(!condition.isInverted()), condScope.pass(condition.isInverted())));
-        condScope.popPass();
+        instructions.add(new Jump(condition.getResult(), flow.pass(!condition.isInverted()), flow.pass(condition.isInverted())));
+        flow.pop();
         instructions.add(entry);
         instructions.addAll(loopBlock.generateIr());
         switch (instructions.get(instructions.size() - 1).getType()) {
@@ -52,7 +52,7 @@ public class WhileClause extends Sentence {
         }
         tail.setTag(Tagger.newTag());
         instructions.add(tail);
-        loopScope.popLayer();
+        scope.popLayer();
         return instructions;
     }
 
